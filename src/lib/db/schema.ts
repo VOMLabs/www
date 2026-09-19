@@ -21,6 +21,10 @@ export const users = pgTable("user", {
   banned: boolean("banned"),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
+  bio: text("bio"),
+  website: text("website"),
+  location: text("location"),
+  birthday: timestamp("birthday"),
 });
 
 export const accounts = pgTable(

@@ -144,3 +144,57 @@ export const setRole = createServerFn({ method: "POST" })
       .set({ role: data.role })
       .where(eq(users.id, data.userId));
   });
+
+// ---------------------------------------------------------------------------
+// User profile
+// ---------------------------------------------------------------------------
+
+export const getCurrentUser = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const headers = getRequestHeaders();
+    const session = await auth.api.getSession({ headers });
+    if (!session) return { user: null };
+
+    const [user] = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        username: users.username,
+        displayUsername: users.displayUsername,
+        image: users.image,
+        role: users.role,
+        bio: users.bio,
+        website: users.website,
+        location: users.location,
+        birthday: users.birthday,
+        createdAt: users.createdAt,
+      })
+      .from(users)
+      .where(eq(users.id, session.user.id));
+
+    return { user: user ?? null };
+  },
+);
+
+export const updateProfile = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      name?: string;
+      bio?: string;
+      website?: string;
+      location?: string;
+      image?: string;
+      birthday?: Date | null;
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    const headers = getRequestHeaders();
+    const session = await auth.api.getSession({ headers });
+    if (!session) throw new Error("Unauthorized");
+
+    await db
+      .update(users)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(users.id, session.user.id));
+  });

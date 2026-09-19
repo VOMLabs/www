@@ -5,6 +5,11 @@ export const envSchema = {
   DATABASE_URL: v.pipe(v.string(), v.url()),
   BETTER_AUTH_URL: v.optional(v.pipe(v.string(), v.url())),
   BETTER_AUTH_SECRET: v.optional(v.pipe(v.string(), v.minLength(8))),
+  S3_ENDPOINT: v.optional(v.pipe(v.string(), v.url())),
+  S3_ACCESS_KEY_ID: v.optional(v.string()),
+  S3_SECRET_ACCESS_KEY: v.optional(v.string()),
+  S3_BUCKET: v.optional(v.string()),
+  S3_PUBLIC_URL: v.optional(v.pipe(v.string(), v.url())),
 } as const;
 
 /**
