@@ -10,6 +10,7 @@ import {
   createContext,
   useContext,
   useId,
+  useMemo,
   type ComponentType,
   type HTMLAttributes,
   type ReactNode,
@@ -73,9 +74,10 @@ export function ChartContainer({
 }: ChartContainerProps) {
   const generatedId = useId();
   const chartId = id ?? `chart-${generatedId.replace(/:/g, "")}`;
+  const chartContextValue = useMemo(() => ({ config }), [config]);
 
   return (
-    <ChartContext.Provider value={{ config }}>
+    <ChartContext.Provider value={chartContextValue}>
       <div
         data-chart={chartId}
         data-slot="chart"

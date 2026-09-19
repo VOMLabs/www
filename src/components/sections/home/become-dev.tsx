@@ -3,7 +3,7 @@
 import CodeFork from "@gravity-ui/icons/CodeFork";
 import HandOk from "@gravity-ui/icons/HandOk";
 import Persons from "@gravity-ui/icons/Persons";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 
 import { type IconComponent } from "@/components/icons";
@@ -38,10 +38,13 @@ const items: {
 ];
 
 export function BecomeDev() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
     logger.debug("BecomeDev section mounted");
   }, []);
 
@@ -50,8 +53,8 @@ export function BecomeDev() {
       id="become-a-developer"
       className="border-border bg-muted/30 border-y"
     >
-      <div className="container-editorial py-16 md:py-24">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div className="container-editorial py-12 sm:py-16 md:py-24">
+        <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="eyebrow">
               <span className="eyebrow-dot" />
@@ -63,42 +66,47 @@ export function BecomeDev() {
             </p>
           </div>
           {mounted && (
-            <Button
-              onClick={() => {
-                try {
-                  logger.info("BecomeDev Discord button clicked", {
-                    url: "https://discord.vomlabs.com",
-                  });
-                  toast.info("Opening Discord...", { duration: 2000 });
-                  window.open(
-                    "https://discord.vomlabs.com",
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                } catch (error) {
-                  logger.error("Failed to open Discord from BecomeDev", {
-                    error:
-                      error instanceof Error ? error.message : String(error),
-                  });
-                  toast.error("Failed to open Discord. Please try again.");
-                }
-              }}
-            >
-              <DiscordIcon className="size-4" />
-              Join Discord to Apply
-            </Button>
+            <div className="self-start lg:self-auto">
+              <Button
+                onClick={() => {
+                  try {
+                    logger.info("BecomeDev Discord button clicked", {
+                      url: "https://discord.vomlabs.com",
+                    });
+                    toast.info("Opening Discord...", { duration: 2000 });
+                    window.open(
+                      "https://discord.vomlabs.com",
+                      "_blank",
+                      "noopener,noreferrer",
+                    );
+                  } catch (error) {
+                    logger.error("Failed to open Discord from BecomeDev", {
+                      error:
+                        error instanceof Error ? error.message : String(error),
+                    });
+                    toast.error("Failed to open Discord. Please try again.");
+                  }
+                }}
+              >
+                <DiscordIcon className="size-4" />
+                Join Discord to Apply
+              </Button>
+            </div>
           )}
         </div>
-        <ul className="mt-12 grid gap-10 sm:grid-cols-3 sm:gap-8">
+        <ul className="mt-10 grid gap-8 sm:mt-12 sm:grid-cols-3 sm:gap-8">
           {items.map((item) => {
             const Icon = item.icon;
             return (
-              <li className="border-border border-t pt-6" key={item.title}>
-                <Icon className="text-lime-dim dark:text-lime size-4" />
-                <h3 className="mt-3 text-base font-medium tracking-[-0.01em]">
+              <li
+                className="border-border border-t pt-6 sm:pt-6"
+                key={item.title}
+              >
+                <Icon className="text-lime-dim dark:text-lime size-5" />
+                <h3 className="mt-3 text-sm font-medium tracking-[-0.01em] sm:text-base">
                   {item.title}
                 </h3>
-                <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+                <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
                   {item.description}
                 </p>
               </li>

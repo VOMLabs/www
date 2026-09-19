@@ -12,7 +12,11 @@ export function getRouter() {
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
 
-    defaultErrorComponent: ({ error }) => <ErrorPage error={error} />,
+    defaultErrorComponent: ({ error }) => (
+      <ErrorPage
+        error={error instanceof Error ? error : new Error(String(error))}
+      />
+    ),
   });
 
   return router;

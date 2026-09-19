@@ -7,7 +7,7 @@ import Cpu from "@gravity-ui/icons/Cpu";
 import Route from "@gravity-ui/icons/Route";
 import Terminal from "@gravity-ui/icons/Terminal";
 import Wrench from "@gravity-ui/icons/Wrench";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 
 import { type IconComponent } from "@/components/icons";
@@ -67,10 +67,13 @@ const items: {
 ];
 
 export function Engineers() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
     logger.debug("Engineers section mounted");
   }, []);
 
@@ -90,12 +93,12 @@ export function Engineers() {
               key={item.title}
             >
               <div className="flex items-center gap-3">
-                <Icon className="text-lime-dim dark:text-lime size-4 shrink-0" />
-                <h3 className="text-base font-medium tracking-[-0.01em] md:text-lg">
+                <Icon className="text-lime-dim dark:text-lime size-5 shrink-0" />
+                <h3 className="text-sm font-medium tracking-[-0.01em] sm:text-base md:text-lg">
                   {item.title}
                 </h3>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm">
                 {item.description}
               </p>
             </li>
@@ -124,7 +127,7 @@ export function Engineers() {
               }
             }}
           >
-            <BookOpen className="size-4" />
+            <BookOpen className="size-5" />
             View the Documentation
           </Button>
         </div>

@@ -1,4 +1,5 @@
-import { describe, expect, it } from "bun:test";
+// @vitest-environment node
+import { describe, expect, it } from "vitest";
 
 import { createValidatedEnv, shouldSkipEnvValidation } from "./env.js";
 

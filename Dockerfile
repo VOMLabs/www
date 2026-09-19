@@ -1,12 +1,13 @@
-FROM oven/bun:1.3.14 AS base
+FROM node:22-alpine AS base
 WORKDIR /app
 
 FROM base AS build
-COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN corepack enable && corepack prepare pnpm@11.26.0 --activate
+RUN pnpm install --frozen-lockfile
 COPY . .
 ENV NODE_ENV=production
-RUN bun run build
+RUN pnpm run build
 
 FROM base AS runner
 WORKDIR /app
@@ -25,4 +26,4 @@ COPY --from=build --chown=nodeuser:nodejs /app/node_modules ./node_modules
 USER nodeuser
 
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["pnpm", "run", "start"]

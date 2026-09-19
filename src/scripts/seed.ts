@@ -161,50 +161,51 @@ const authorData = {
 
 const helloWorldPost = {
   slug: "hello-world",
-  title: "Hello, World: Vite 8, Rolldown, and Bun",
+  title: "Hello, World: Vite 8, Rolldown, and pnpm",
   excerpt:
-    "A quick tour of the modern build stack powering VOMLabs — Vite 8, Rolldown, and Bun.",
-  content: `Welcome to the first post on the VOMLabs blog. Today we're taking a quick look at the modern JavaScript build stack powering this very site: **Vite 8**, **Rolldown**, and **Bun**.
+    "A quick tour of the modern build stack powering VOMLabs — Vite 8, Rolldown, and pnpm.",
+  content: `Welcome to the first post on the VOMLabs blog. Today we're taking a quick look at the modern JavaScript build stack powering this very site: **Vite 8**, **Rolldown**, and **pnpm**.
 
 ## The Stack
 
-This website is built with TanStack Start, styled with Tailwind CSS v4, and tooled end-to-end with Bun:
+This website is built with TanStack Start, styled with Tailwind CSS v4, and tooled end-to-end with pnpm:
 
-- **Bun** is the runtime and package manager — it installs dependencies, runs tests, and executes scripts with zero config.
+- **pnpm** is the package manager — fast, disk-efficient installs backed by a content-addressable store.
+- **Vitest** runs the unit tests with the same \`describe\`/\`it\`/\`expect\` API.
 - **Vite 8** is the bundler, now powered by **Rolldown**, the Rust-based port of Rollup.
 - **Tailwind CSS v4** compiles styles at build time with lightning-fast CSS.
 
 ## Code Blocks
 
-Everything in the toolchain runs on plain Bun scripts now. No \`dotenv\`, no \`tsx\`, no \`vitest\`:
+Everything in the toolchain runs on plain Node scripts now:
 
 \`\`\`bash
-bun run dev      # start the dev server
-bun test         # run tests with bun:test
-bun run db:seed  # seed the database (plain TS, no tsx)
+pnpm run dev      # start the dev server
+pnpm test         # run tests with vitest
+pnpm run db:seed  # seed the database (plain TS via tsx)
 \`\`\`
 
 And a quick TypeScript example:
 
 \`\`\`ts
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 
 describe("tooling", () => {
-  it("runs natively on Bun", () => {
-    expect(typeof Bun).toBe("object");
+  it("runs on Node", () => {
+    expect(typeof process).toBe("object");
   });
 });
 \`\`\`
 
 ## Callouts
 
-> **Tip:** Bun loads \`.env\` files automatically, so \`import "dotenv/config"\` is no longer needed.
+> **Tip:** \`tsx\` runs TypeScript scripts directly, so no separate compile step is needed for \`db:seed\`.
 
-> **Note:** The \`bun:test\` runner is a drop-in replacement for Vitest for plain unit tests — same \`describe\`/\`it\`/\`expect\` API.
+> **Note:** Vitest is a drop-in replacement for \`bun:test\` for plain unit tests — same \`describe\`/\`it\`/\`expect\` API.
 
 ## Why It Matters
 
-Faster installs, faster tests, faster builds. One runtime for scripts, tests, and production — that's the whole pitch.
+Fast, reproducible installs. One lockfile for the whole team. That's the whole pitch.
 
 Stay tuned for more posts about what we're building at VOMLabs.`,
 };

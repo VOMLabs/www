@@ -102,6 +102,8 @@ function Carousel({
     if (!api) {
       return;
     }
+    // Synchronizing with the embla instance (external system) — intentional.
+    // oxlint-disable-next-line react/set-state-in-effect
     onSelect(api);
     api.on("reInit", onSelect);
     api.on("select", onSelect);

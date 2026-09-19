@@ -1,9 +1,13 @@
+# pnpm workspace + build-script approvals
+# The repo is a single package; this file also decides which dependencies may
+# run postinstall/build scripts (native binding downloads) during `pnpm install`.
 packages: []
 
 allowBuilds:
+  # Required native-binding builds (approved)
   esbuild: true
   lightningcss: true
   unrs-resolver: true
-  msw: false
-  "@prisma/client": set this to true or false
-  better-sqlite3: set this to true or false
+  # Unused transitive deps — deliberately never built
+  "@prisma/client": false
+  better-sqlite3: false

@@ -6,7 +6,7 @@ import CircleInfo from "@gravity-ui/icons/CircleInfo";
 import CircleXmark from "@gravity-ui/icons/CircleXmark";
 import TriangleExclamation from "@gravity-ui/icons/TriangleExclamation";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 import { createLogger } from "@/lib/logger";
@@ -14,11 +14,14 @@ import { createLogger } from "@/lib/logger";
 const logger = createLogger("Toaster");
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const [mounted, setMounted] = useState(false);
   const { theme = "system" } = useTheme();
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
     logger.debug("Toaster mounted", { theme });
   }, [theme]);
 

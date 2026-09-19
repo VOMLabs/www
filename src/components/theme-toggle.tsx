@@ -3,7 +3,7 @@
 import Moon from "@gravity-ui/icons/Moon";
 import Sun from "@gravity-ui/icons/Sun";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
 import { createLogger } from "@/lib/logger";
@@ -12,10 +12,13 @@ const logger = createLogger("ThemeToggle");
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
     logger.debug("ThemeToggle mounted", { theme });
   }, [theme]);
 
