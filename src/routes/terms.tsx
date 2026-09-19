@@ -35,7 +35,7 @@ function TermsPage() {
       </SectionRow>
       <SectionRow index="03" title="Acceptable Use">
         <p>You agree not to:</p>
-        <ul className="list-none space-y-1.5">
+        <ul className="list-none space-y-2">
           <li>Use VOMLabs software for any illegal or unauthorized purpose.</li>
           <li>
             Attempt to bypass, exploit, or compromise Minecraft servers,
@@ -68,7 +68,7 @@ function TermsPage() {
           consequential, arising out of or in connection with your use of or
           inability to use VOMLabs software, including but not limited to:
         </p>
-        <ul className="list-none space-y-1.5">
+        <ul className="list-none space-y-2">
           <li>Loss of data or corruption of data.</li>
           <li>Business interruption.</li>
           <li>Indirect or consequential damages of any kind.</li>

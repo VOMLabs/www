@@ -28,7 +28,7 @@ function TosPage() {
       </SectionRow>
       <SectionRow index="03" title="Acceptable Use">
         <p>You agree not to:</p>
-        <ul className="list-none space-y-1.5">
+        <ul className="list-none space-y-2">
           <li>Use VOMLabs software for any illegal or unauthorized purpose.</li>
           <li>
             Attempt to bypass, exploit, or compromise Minecraft servers,

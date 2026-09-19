@@ -36,7 +36,7 @@ export function Faq({
                 <button
                   aria-controls={contentId}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-4 py-6 text-left"
                   onClick={() => {
                     try {
                       const next = isOpen ? null : faq.id;
@@ -70,7 +70,7 @@ export function Faq({
                   id={contentId}
                 >
                   <div className="overflow-hidden">
-                    <div className="pb-5">
+                    <div className="pb-6">
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {faq.answer}
                       </p>
