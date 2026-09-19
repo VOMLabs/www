@@ -1,16 +1,26 @@
 ---
-name: WorkflowDesigner
-description: Designs complete workflow definitions with context dependencies and success criteria
-mode: subagent
-temperature: 0.1
-permission:
-  task:
-    contextscout: "allow"
-    "*": "deny"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
+name: "WorkflowDesigner"
+description: "Designs complete workflow definitions with context dependencies and success criteria"
+mode: "subagent"
+request:
+  body:
+    temperature: 0.1
+permissions:
+  - action: subagent
+    resource: "*"
+    effect: deny
+  - action: subagent
+    resource: "subagents/core/contextscout"
+    effect: allow
+  - action: edit
+    resource: "**/*.env*"
+    effect: deny
+  - action: edit
+    resource: "**/*.key"
+    effect: deny
+  - action: edit
+    resource: "**/*.secret"
+    effect: deny
 ---
 
 # Workflow Designer
@@ -70,7 +80,7 @@ Call ContextScout immediately when ANY of these triggers apply:
 ### How to Invoke
 
 ```
-task(subagent_type="ContextScout", description="Find workflow design standards", prompt="Find workflow design patterns, agent coordination standards, context dependency mapping conventions, and validation gate requirements. I need to understand existing workflow patterns before designing new ones for [use case].")
+subagent(agent: "subagents/core/contextscout", description: "Find workflow design standards", prompt: "Find workflow design patterns, agent coordination standards, context dependency mapping conventions, and validation gate requirements. I need to understand existing workflow patterns before designing new ones for [use case].")
 ```
 
 ### After ContextScout Returns

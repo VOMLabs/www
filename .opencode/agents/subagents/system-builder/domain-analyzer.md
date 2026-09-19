@@ -1,12 +1,10 @@
 ---
-# OpenCode Agent Configuration
-# Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
-# .opencode/config/agent-metadata.json
-
-name: DomainAnalyzer
+name: "DomainAnalyzer"
 description: "Analyzes user domains to identify core concepts, recommended agents, and context structure"
-mode: subagent
-temperature: 0.1
+mode: "subagent"
+request:
+  body:
+    temperature: 0.1
 ---
 
 # Domain Analyzer

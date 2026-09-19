@@ -94,10 +94,9 @@ Live docs fetched via ExternalScout. Read-only cache.
 
 **Step 5: Delegate**
 ```javascript
-task(
-  subagent_type="TaskManager",
-  description="{brief}",
-  prompt="Load context from .tmp/sessions/{session-id}/context.md
+subagent(agent: "subagents/core/task-manager",
+  description: "{brief}",
+  prompt: "Load context from .tmp/sessions/{session-id}/context.md
           {specific instructions}"
 )
 ```

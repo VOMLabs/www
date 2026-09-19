@@ -49,10 +49,10 @@ Result: Broken code ❌
 
 ```javascript
 // 1. ContextScout: Project standards
-task(subagent_type="ContextScout", ...)
+subagent(agent: "subagents/core/contextscout", ...)
 
 // 2. ExternalScout: Library docs  
-task(subagent_type="ExternalScout", ...)
+subagent(agent: "subagents/core/externalscout", ...)
 
 // 3. Combine: Implement using both
 ```
@@ -73,10 +73,9 @@ If library not in Context7: Auto-fallback to official docs via webfetch.
 
 **Template:**
 ```javascript
-task(
-  subagent_type="ExternalScout",
-  description="Fetch [Library] docs for [specific topic]",
-  prompt="Fetch current documentation for [Library]: [specific question]
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch [Library] docs for [specific topic]",
+  prompt: "Fetch current documentation for [Library]: [specific question]
   
   Focus on:
   - [What you need - be specific]
@@ -97,10 +96,9 @@ task(
 1. Read error message carefully
 2. ExternalScout again with specific error:
 ```javascript
-task(
-  subagent_type="ExternalScout",
-  description="Fetch docs for error resolution",
-  prompt="Fetch [Library] docs: [error message]
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch docs for error resolution",
+  prompt: "Fetch [Library] docs: [error message]
   Error: [paste actual error]
   Focus on: Common causes | Solutions"
 )

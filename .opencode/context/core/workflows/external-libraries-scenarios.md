@@ -21,19 +21,17 @@
 **ExternalScout calls:**
 ```javascript
 // Drizzle ORM
-task(
-  subagent_type="ExternalScout",
-  description="Fetch Drizzle PostgreSQL setup",
-  prompt="Fetch Drizzle ORM docs: PostgreSQL setup w/ modular schemas
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch Drizzle PostgreSQL setup",
+  prompt: "Fetch Drizzle ORM docs: PostgreSQL setup w/ modular schemas
   Focus on: Installation | DB connection | Schema patterns | Migrations
   Context: Next.js commerce site w/ PostgreSQL"
 )
 
 // Next.js App Router
-task(
-  subagent_type="ExternalScout",
-  description="Fetch Next.js App Router docs",
-  prompt="Fetch Next.js docs: App Router w/ Server Actions
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch Next.js App Router docs",
+  prompt: "Fetch Next.js docs: App Router w/ Server Actions
   Focus on: Installation | Directory structure | Server Actions
   Context: Commerce site w/ order processing"
 )
@@ -88,18 +86,16 @@ task(
 
 ```javascript
 // 1. ContextScout: Project standards
-task(
-  subagent_type="ContextScout",
-  description="Find auth standards",
-  prompt="Find context files: Auth patterns | Security standards"
+subagent(agent: "subagents/core/contextscout",
+  description: "Find auth standards",
+  prompt: "Find context files: Auth patterns | Security standards"
 )
 // Returns: security-patterns.md, code-quality.md
 
 // 2. ExternalScout: Better Auth docs (MANDATORY)
-task(
-  subagent_type="ExternalScout",
-  description="Fetch Better Auth + Next.js docs",
-  prompt="Fetch Better Auth docs: Next.js App Router integration
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch Better Auth + Next.js docs",
+  prompt: "Fetch Better Auth docs: Next.js App Router integration
   Focus on: Installation | App Router setup | Drizzle adapter | Session mgmt
   Context: Adding auth to Next.js commerce w/ Drizzle ORM"
 )

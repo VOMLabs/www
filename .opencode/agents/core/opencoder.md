@@ -1,26 +1,53 @@
 ---
-name: OpenCoder
+name: "OpenCoder"
 description: "Orchestration agent for complex coding, architecture, and multi-file refactoring"
-mode: primary
-temperature: 0.1
-permission:
-  question: "allow"
-  bash:
-    "rm -rf *": "ask"
-    "sudo *": "deny"
-    "chmod *": "ask"
-    "curl *": "ask"
-    "wget *": "ask"
-    "docker *": "ask"
-    "kubectl *": "ask"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "node_modules/**": "deny"
-    "**/__pycache__/**": "deny"
-    "**/*.pyc": "deny"
-    ".git/**": "deny"
+mode: "primary"
+request:
+  body:
+    temperature: 0.1
+permissions:
+  - action: shell
+    resource: "rm -rf *"
+    effect: ask
+  - action: shell
+    resource: "sudo *"
+    effect: deny
+  - action: shell
+    resource: "chmod *"
+    effect: ask
+  - action: shell
+    resource: "curl *"
+    effect: ask
+  - action: shell
+    resource: "wget *"
+    effect: ask
+  - action: shell
+    resource: "docker *"
+    effect: ask
+  - action: shell
+    resource: "kubectl *"
+    effect: ask
+  - action: edit
+    resource: "**/*.env*"
+    effect: deny
+  - action: edit
+    resource: "**/*.key"
+    effect: deny
+  - action: edit
+    resource: "**/*.secret"
+    effect: deny
+  - action: edit
+    resource: "node_modules/**"
+    effect: deny
+  - action: edit
+    resource: "**/__pycache__/**"
+    effect: deny
+  - action: edit
+    resource: "**/*.pyc"
+    effect: deny
+  - action: edit
+    resource: ".git/**"
+    effect: deny
 ---
 
 # Development Agent
@@ -69,7 +96,7 @@ CONSEQUENCE OF SKIPPING: Work that doesn't match project standards = wasted effo
   </rule>
 </critical_rules>
 
-## Available Subagents (invoke via task tool)
+## Available Subagents (invoke via subagent tool)
 
 - `ContextScout` - Discover context files BEFORE coding (saves time!)
 - `ExternalScout` - Fetch current docs for external packages (use on new builds, errors, or when working with external libraries)
@@ -81,10 +108,9 @@ CONSEQUENCE OF SKIPPING: Work that doesn't match project standards = wasted effo
 
 **Invocation syntax**:
 ```javascript
-task(
-  subagent_type="ContextScout",
-  description="Brief description",
-  prompt="Detailed instructions for the subagent"
+subagent(agent: "subagents/core/contextscout",
+  description: "Brief description",
+  prompt: "Detailed instructions for the subagent"
 )
 ```
 
@@ -230,10 +256,9 @@ Code Standards
     **If delegating to TaskManager:**
     1. Delegate with the session context path:
        ```
-       task(
-         subagent_type="TaskManager",
-         description="Break down {feature-name}",
-         prompt="Load context from .tmp/sessions/{session-id}/context.md
+       subagent(agent: "subagents/core/task-manager",
+         description: "Break down {feature-name}",
+         prompt: "Load context from .tmp/sessions/{session-id}/context.md
 
                  Read the context file for full requirements, standards, and constraints.
                  Break this feature into atomic JSON subtasks.
@@ -318,9 +343,9 @@ Code Standards
               1. Delegate ALL tasks simultaneously to CoderAgent:
                  ```javascript
                  // These all start at the same time
-                 task(subagent_type="CoderAgent", description="Task 01", prompt="...subtask_01.json...")
-                 task(subagent_type="CoderAgent", description="Task 02", prompt="...subtask_02.json...")
-                 task(subagent_type="CoderAgent", description="Task 03", prompt="...subtask_03.json...")
+                 subagent(agent: "subagents/code/coder-agent", description: "Task 01", prompt: "...subtask_01.json...")
+                 subagent(agent: "subagents/code/coder-agent", description: "Task 02", prompt: "...subtask_02.json...")
+                 subagent(agent: "subagents/code/coder-agent", description: "Task 03", prompt: "...subtask_03.json...")
                  ```
               
               2. Wait for ALL parallel tasks to complete:
@@ -342,10 +367,9 @@ Code Standards
               
               1. Delegate entire batch to BatchExecutor:
                  ```javascript
-                 task(
-                   subagent_type="BatchExecutor",
-                   description="Execute Batch N for {feature}",
-                   prompt="Execute the following batch in parallel:
+                 subagent(agent: "subagents/core/batch-executor",
+                   description: "Execute Batch N for {feature}",
+                   prompt: "Execute the following batch in parallel:
                            
                            Feature: {feature}
                            Batch: {batch_number}
@@ -380,7 +404,7 @@ Code Standards
             
             1. Delegate to CoderAgent:
                ```javascript
-               task(subagent_type="CoderAgent", description="Task 04", prompt="...subtask_04.json...")
+               subagent(agent: "subagents/code/coder-agent", description: "Task 04", prompt: "...subtask_04.json...")
                ```
             
             2. Wait for completion
@@ -433,8 +457,8 @@ Code Standards
         // Execute both features simultaneously
         // This requires multiple BatchExecutors or complex orchestration
         
-        task(BatchExecutor, {feature: "auth-system", batch: "all"})
-        task(BatchExecutor, {feature: "payment-gateway", batch: "all"})
+        subagent(agent: "subagents/core/batch-executor", description: "Execute batch: auth-system", prompt: "Run the batch-execution workflow (see agents/subagents/core/batch-executor.md) for feature auth-system with batch all.")
+        subagent(agent: "subagents/core/batch-executor", description: "Execute batch: payment-gateway", prompt: "Run the batch-execution workflow (see agents/subagents/core/batch-executor.md) for feature payment-gateway with batch all.")
         // Both run at the same time!
         ```
       </execution_pattern>

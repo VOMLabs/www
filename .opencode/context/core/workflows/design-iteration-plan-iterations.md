@@ -103,10 +103,9 @@ Agent:
 **Pattern**:
 ```javascript
 // When delegating to subagent
-task(
-  subagent_type="OpenFrontendSpecialist",
-  description="Implement Stage 4",
-  prompt="Load design plan from .tmp/design-plans/saas-landing-page.md
+subagent(agent: "subagents/development/frontend-specialist",
+  description: "Implement Stage 4",
+  prompt: "Load design plan from .tmp/design-plans/saas-landing-page.md
   
   Read the plan file for:
   - All approved decisions from Stages 1-3

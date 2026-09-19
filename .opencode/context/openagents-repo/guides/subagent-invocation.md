@@ -1,206 +1,135 @@
-<!-- Context: openagents-repo/guides | Priority: high | Version: 1.0 | Updated: 2026-02-15 -->
+<!-- Context: openagents-repo/guides | Priority: high | Version: 2.0 | Updated: 2026-09-19 -->
 
-# Guide: Subagent Invocation
+# Guide: Subagent Invocation (OpenCode v2)
 
-**Purpose**: How to correctly invoke subagents using the task tool  
+**Purpose**: How to correctly invoke subagents using the subagent tool in OpenCode v2  
 **Priority**: HIGH - Critical for agent delegation
 
 ---
 
-## The Problem
+## The Model
 
-**Issue**: Agents trying to invoke subagents with incorrect `subagent_type` format
+OpenCode v2 loads agents from `.opencode/agents/`. An agent's ID is its path relative to that
+directory, with nested folders separated by `/`:
 
-**Error**:
+```text
+.opencode/agents/core/openagent.md                    →  core/openagent
+.opencode/agents/subagents/core/contextscout.md       →  subagents/core/contextscout
+.opencode/agents/subagents/code/coder-agent.md        →  subagents/code/coder-agent
+.opencode/agents/team/reviewer.md                     →  team/reviewer
 ```
-Unknown agent type: ContextScout is not a valid agent type
-```
 
-**Root Cause**: The `subagent_type` parameter in the task tool must match the registered agent type in the OpenCode CLI, not the file path.
+The `name:` frontmatter field is a display label. **Use the path-derived ID in subagent calls, never the name.**
 
 ---
 
 ## Correct Subagent Invocation
 
-### Available Subagent Types
-
-Based on the OpenCode CLI registration, use these exact strings for `subagent_type`:
-
-**Core Subagents**:
-- `"Task Manager"` - Task breakdown and planning
-- `"Documentation"` - Documentation generation
-- `"ContextScout"` - Context file discovery
-
-**Code Subagents**:
-- `"Coder Agent"` - Code implementation
-- `"TestEngineer"` - Test authoring
-- `"Reviewer"` - Code review
-- `"Build Agent"` - Build validation
-
-**System Builder Subagents**:
-- `"Domain Analyzer"` - Domain analysis
-- `"Agent Generator"` - Agent generation
-- `"Context Organizer"` - Context organization
-- `"Workflow Designer"` - Workflow design
-- `"Command Creator"` - Command creation
-
-**Utility Subagents**:
-- `"Image Specialist"` - Image generation/editing
-
----
-
-## Invocation Syntax
-
-### ✅ Correct Format
+Use the `subagent` tool with the exact agent ID:
 
 ```javascript
-task(
-  subagent_type="Task Manager",
-  description="Break down feature into subtasks",
-  prompt="Detailed instructions..."
+subagent(agent: "subagents/core/task-manager",
+  description: "Break down feature into subtasks",
+  prompt: "Detailed instructions..."
 )
 ```
 
 ### ❌ Incorrect Formats
 
 ```javascript
-// ❌ Using file path
-task(
-  subagent_type="TaskManager",
-  ...
-)
+// ❌ Using display name
+subagent(agent: "Task Manager", ...)
 
-// ❌ Using kebab-case ID
-task(
-  subagent_type="task-manager",
-  ...
-)
+// ❌ Bare kebab-case ID without subfolder prefix
+subagent(agent: "task-manager", ...)
 
-// ❌ Using registry path
-task(
-  subagent_type=".opencode/agent/subagents/core/task-manager.md",
-  ...
-)
+// ❌ Using a file path
+subagent(agent: ".opencode/agents/subagents/core/task-manager.md", ...)
 ```
 
 ---
 
-## How to Find the Correct Type
+## Available Agent IDs (this repo)
 
-### Method 1: Check Registry
+**Core agents**:
+- `core/openagent` - Universal orchestration agent
+- `core/opencoder` - Coding orchestration agent
+- `meta/repo-manager` - Repository meta-agent
+- `meta/system-builder` - System building orchestrator
+- `content/copywriter` - Persuasive writing
+- `content/technical-writer` - Technical documentation
+- `data/data-analyst` - Data analysis
+- `eval-runner` - Test harness (do not use directly)
 
-```bash
-# List all subagent names
-cat registry.json | jq -r '.components.subagents[] | "\(.name)"'
-```
+**Subagents (code)**:
+- `subagents/code/coder-agent` - Code implementation
+- `subagents/code/test-engineer` - Test authoring (TDD)
+- `subagents/code/reviewer` - Code review / QA
+- `subagents/code/build-agent` - Type check / build validation
 
-**Output**:
-```
-Task Manager
-Image Specialist
-Reviewer
-TestEngineer
-Documentation Writer
-Coder Agent
-Build Agent
-Domain Analyzer
-Agent Generator
-Context Organizer
-Workflow Designer
-Command Creator
-ContextScout
-```
+**Subagents (core)**:
+- `subagents/core/contextscout` - Context file discovery
+- `subagents/core/externalscout` - External library docs
+- `subagents/core/task-manager` - JSON task breakdown
+- `subagents/core/batch-executor` - Parallel batch execution
+- `subagents/core/documentation` - Documentation authoring
+- `subagents/core/context-retriever` - Generic context search
 
-### Method 2: Check OpenCode CLI
+**Subagents (development)**:
+- `subagents/development/frontend-specialist` - UI design systems
+- `subagents/development/devops-specialist` - CI/CD, infra
 
-```bash
-# List available agents (if CLI supports it)
-opencode list agents
-```
+**Subagents (system-builder)**:
+- `subagents/system-builder/domain-analyzer` - Domain analysis
+- `subagents/system-builder/agent-generator` - Agent file generation
+- `subagents/system-builder/command-creator` - Slash command creation
+- `subagents/system-builder/context-organizer` - Context organization
+- `subagents/system-builder/workflow-designer` - Workflow design
 
-### Method 3: Check Agent Frontmatter
-
-Look at the `name` field in the subagent's frontmatter:
-
-```yaml
----
-id: task-manager
-name: Task Manager  # ← Use this for subagent_type
-type: subagent
----
-```
+**Subagents (utils)**:
+- `subagents/utils/image-specialist` - Image generation/editing
 
 ---
 
 ## Common Subagent Invocations
 
-### Task Manager
+### Task breakdown
 
 ```javascript
-task(
-  subagent_type="Task Manager",
-  description="Break down complex feature",
-  prompt="Break down the following feature into atomic subtasks:
-          
+subagent(agent: "subagents/core/task-manager",
+  description: "Break down complex feature",
+  prompt: "Break down the following feature into atomic subtasks:
+
           Feature: {feature description}
-          
+
           Requirements:
           - {requirement 1}
           - {requirement 2}
-          
-          Create subtask files in tasks/subtasks/{feature}/"
+
+          Create subtask files under .tmp/tasks/{feature}/"
 )
 ```
 
-### Documentation
+### Context discovery
 
 ```javascript
-task(
-  subagent_type="Documentation",
-  description="Update documentation for feature",
-  prompt="Update documentation for {feature}:
-          
-          What changed:
-          - {change 1}
-          - {change 2}
-          
-          Files to update:
-          - {doc 1}
-          - {doc 2}"
+subagent(agent: "subagents/core/contextscout",
+  description: "Find context for {topic}",
+  prompt: "Discover context files related to {topic}, ranked by priority."
 )
 ```
 
-### TestEngineer
+### Code review
 
 ```javascript
-task(
-  subagent_type="TestEngineer",
-  description="Write tests for feature",
-  prompt="Write comprehensive tests for {feature}:
-          
-          Files to test:
-          - {file 1}
-          - {file 2}
-          
-          Test coverage:
-          - Positive cases
-          - Negative cases
-          - Edge cases"
-)
-```
+subagent(agent: "subagents/code/reviewer",
+  description: "Review implementation",
+  prompt: "Review the following implementation:
 
-### Reviewer
-
-```javascript
-task(
-  subagent_type="Reviewer",
-  description="Review implementation",
-  prompt="Review the following implementation:
-          
           Files:
           - {file 1}
           - {file 2}
-          
+
           Focus areas:
           - Security
           - Performance
@@ -208,166 +137,86 @@ task(
 )
 ```
 
-### Coder Agent
-
-```javascript
-task(
-  subagent_type="Coder Agent",
-  description="Implement subtask",
-  prompt="Implement the following subtask:
-          
-          Subtask: {subtask description}
-          
-          Files to create/modify:
-          - {file 1}
-          
-          Requirements:
-          - {requirement 1}
-          - {requirement 2}"
-)
-```
-
 ---
 
-## ContextScout Special Case
+## How to Find the Correct Agent ID
 
-**Status**: ⚠️ May not be registered in OpenCode CLI yet
+### Method 1: List the agents directory
 
-The `ContextScout` subagent exists in the repository but may not be registered in the OpenCode CLI's available agent types.
-
-### Workaround
-
-Until ContextScout is properly registered, use direct file operations instead:
-
-```javascript
-// ❌ This may fail
-task(
-  subagent_type="ContextScout",
-  description="Find context files",
-  prompt="Search for context related to {topic}"
-)
-
-// ✅ Use direct operations instead
-// 1. Use glob to find context files
-glob(pattern="**/*.md", path=".opencode/context")
-
-// 2. Use grep to search content
-grep(pattern="registry", path=".opencode/context")
-
-// 3. Read relevant files directly
-read(filePath=".opencode/context/openagents-repo/core-concepts/registry.md")
+```bash
+find .opencode/agents -name "*.md" | sort
 ```
 
+Each file's path relative to `.opencode/agents/` (minus `.md`) is its ID.
+
+### Method 2: Check agent frontmatter
+
+The frontmatter identifies the agent and its mode:
+
+```yaml
 ---
+name: TaskManager        # display label (not an ID)
+description: "..."
+mode: subagent
+---
+```
 
-## Fixing Existing Agents
-
-### Agents That Need Fixing
-
-1. **repo-manager.md** - Uses `ContextScout`
-2. **opencoder.md** - Check if uses incorrect format
-
-### Fix Process
-
-1. **Find incorrect invocations**:
-   ```bash
-   grep -r 'subagent_type="subagents/' .opencode/agent --include="*.md"
-   ```
-
-2. **Replace with correct format**:
-   ```bash
-   # Example: Fix task-manager invocation
-   # Old: subagent_type="TaskManager"
-   # New: subagent_type="Task Manager"
-   ```
-
-3. **Test the fix**:
-   ```bash
-   # Run agent with test prompt
-   # Verify subagent delegation works
-   ```
+Do NOT use the `name` value as the `agent` argument.
 
 ---
 
 ## Validation
 
-### Check Subagent Type Before Using
+Check the agent exists before invoking:
 
-```javascript
-// Pseudo-code for validation
-available_types = [
-  "Task Manager",
-  "Documentation",
-  "TestEngineer",
-  "Reviewer",
-  "Coder Agent",
-  "Build Agent",
-  "Image Specialist",
-  "Domain Analyzer",
-  "Agent Generator",
-  "Context Organizer",
-  "Workflow Designer",
-  "Command Creator"
-]
-
-if subagent_type not in available_types:
-  error("Invalid subagent type: {subagent_type}")
+```bash
+test -f .opencode/agents/subagents/core/task-manager.md && echo "exists"
 ```
 
 ---
 
 ## Best Practices
 
-✅ **Use exact names** - Match registry `name` field exactly  
-✅ **Check registry first** - Verify subagent exists before using  
-✅ **Test invocations** - Test delegation before committing  
-✅ **Document dependencies** - List required subagents in agent frontmatter  
+✅ **Use path-derived IDs** - `subagents/core/contextscout`, not `ContextScout`  
+✅ **Check the agents directory** - Verify the file exists before using  
+✅ **One description per call** - Keep `description` short (3-5 words)  
+✅ **Pass context paths** - Reference session context files in the prompt  
+✅ **Respect permissions** - Agents with `subagent` deny rules must not delegate outside their allowlist
 
-❌ **Don't use paths** - Never use file paths as subagent_type  
-❌ **Don't use IDs** - Don't use kebab-case IDs  
-❌ **Don't assume** - Always verify subagent is registered  
+❌ **Don't use display names** - `name:` is not an ID in v2  
+❌ **Don't use file paths** - Pass the ID, not `.md` paths  
+❌ **Don't guess** - Always check `.opencode/agents/` first
 
 ---
 
 ## Troubleshooting
 
-### Error: "Unknown agent type"
+### Error: "Unknown agent type" / "agent not found"
 
-**Cause**: Subagent type not registered in CLI or incorrect format
-
-**Solutions**:
-1. Check registry for correct name
-2. Verify subagent exists in `.opencode/agent/subagents/`
-3. Use exact name from registry `name` field
-4. If subagent not registered, use direct operations instead
-
-### Error: "Subagent not found"
-
-**Cause**: Subagent file doesn't exist
+**Cause**: The agent ID doesn't match a file in `.opencode/agents/`.
 
 **Solutions**:
-1. Check file exists at expected path
-2. Verify registry entry is correct
-3. Run `./scripts/registry/validate-registry.sh`
+1. `find .opencode/agents -name "*.md"` to list real IDs.
+2. Use the exact path-derived ID.
+3. If the agent file doesn't exist, create it (e.g. with `agents/subagents/core/...`).
 
 ### Delegation Fails Silently
 
-**Cause**: Subagent invoked but doesn't execute
+**Cause**: Subagent invoked but doesn't execute.
 
 **Solutions**:
-1. Check subagent has required tools enabled
-2. Verify subagent permissions allow operation
-3. Check subagent prompt is clear and actionable
+1. Check the subagent's permissions allow the required tools.
+2. Verify the subagent ID matches a file exactly (case-sensitive).
+3. Check the prompt is clear and actionable.
 
 ---
 
 ## Related Files
 
-- **Registry**: `registry.json` - Component catalog
-- **Subagents**: `.opencode/agent/subagents/` - Subagent definitions
-- **Validation**: `scripts/registry/validate-registry.sh`
+- **Agents**: `.opencode/agents/` - Agent definitions (path-derived IDs)
+- **Registry metadata**: `.opencode/config/agent-metadata.json` - OAC metadata (not consumed by OpenCode v2)
 
 ---
 
-**Last Updated**: 2025-12-29  
-**Version**: 0.5.1
+**Last Updated**: 2026-09-19  
+**Version**: 2.0

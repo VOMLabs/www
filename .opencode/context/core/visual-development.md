@@ -55,10 +55,9 @@ Delegate to Image Specialist when users request:
 ### How to Invoke
 
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="[Brief 3-5 word description]",
-  prompt="Context to load:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "[Brief 3-5 word description]",
+  prompt: "Context to load:
           - .opencode/context/core/visual-development.md
           
           Task: [Detailed visual requirement]
@@ -84,10 +83,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate microservices architecture diagram",
-  prompt="Create a technical architecture diagram showing:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate microservices architecture diagram",
+  prompt: "Create a technical architecture diagram showing:
           
           **Services**:
           - API Gateway (entry point)
@@ -125,10 +123,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate analytics dashboard mockup",
-  prompt="Create a UI mockup for an analytics dashboard:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate analytics dashboard mockup",
+  prompt: "Create a UI mockup for an analytics dashboard:
           
           **Layout**:
           - Top: Header with logo, navigation, user menu
@@ -162,10 +159,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate feature announcement graphic",
-  prompt="Create a social media graphic for feature launch:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate feature announcement graphic",
+  prompt: "Create a social media graphic for feature launch:
           
           **Content**:
           - Main headline: 'Introducing Real-Time Collaboration'
@@ -198,10 +194,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate user onboarding flowchart",
-  prompt="Create a flowchart showing user onboarding process:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate user onboarding flowchart",
+  prompt: "Create a flowchart showing user onboarding process:
           
           **Steps**:
           1. User signs up (email/password)
@@ -239,10 +234,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate file upload icon",
-  prompt="Create a modern icon for file upload feature:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate file upload icon",
+  prompt: "Create a modern icon for file upload feature:
           
           **Concept**: Cloud with upward arrow
           **Style**: 
@@ -268,10 +262,9 @@ task(
 
 **Invocation**:
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Enhance screenshot for documentation",
-  prompt="Edit the existing screenshot at docs/raw-screenshot.png:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Enhance screenshot for documentation",
+  prompt: "Edit the existing screenshot at docs/raw-screenshot.png:
           
           **Enhancements Needed**:
           - Add subtle drop shadow for depth

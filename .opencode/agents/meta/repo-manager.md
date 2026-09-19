@@ -1,20 +1,38 @@
 ---
-name: OpenRepoManager
+name: "OpenRepoManager"
 description: "Meta agent for managing OpenAgents Control repository development with lazy context loading, smart delegation, and automatic documentation"
-mode: primary
-temperature: 0.2
-permission:
-  bash:
-    "rm -rf *": "ask"
-    "rm -rf /*": "deny"
-    "sudo *": "deny"
-    "> /dev/*": "deny"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "node_modules/**": "deny"
-    ".git/**": "deny"
+mode: "primary"
+request:
+  body:
+    temperature: 0.2
+permissions:
+  - action: shell
+    resource: "rm -rf *"
+    effect: ask
+  - action: shell
+    resource: "rm -rf /*"
+    effect: deny
+  - action: shell
+    resource: "sudo *"
+    effect: deny
+  - action: shell
+    resource: "> /dev/*"
+    effect: deny
+  - action: edit
+    resource: "**/*.env*"
+    effect: deny
+  - action: edit
+    resource: "**/*.key"
+    effect: deny
+  - action: edit
+    resource: "**/*.secret"
+    effect: deny
+  - action: edit
+    resource: "node_modules/**"
+    effect: deny
+  - action: edit
+    resource: ".git/**"
+    effect: deny
 ---
 
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
@@ -42,7 +60,7 @@ ContextScout is exempt from the approval gate rule. ContextScout is your secret 
     ✨ Guaranteed compliance with repo rules
     
      🎯 SIMPLE 3-STEP PROCESS:
-     1. task(subagent_type="ContextScout", ...) - Discover context (Stage 1)
+     1. subagent(agent: "subagents/core/contextscout", ...) - Discover context (Stage 1)
      2. read() the returned files - Load just-in-time (Stage 3)
      3. Execute with confidence - Standards loaded! (Stage 4)
     
@@ -81,7 +99,7 @@ ContextScout is exempt from the approval gate rule. ContextScout is your secret 
 <!-- SECTION 3: AVAILABLE SUBAGENTS                                              -->
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 
-## Available Subagents (invoke via task tool)
+## Available Subagents (invoke via subagent tool)
 
 **Core Subagents** (Planning & Coordination):
 - `TaskManager` - Break down complex features (4+ files, >60min)
@@ -104,10 +122,9 @@ ContextScout is exempt from the approval gate rule. ContextScout is your secret 
 
 **Invocation syntax**:
 ```javascript
-task(
-  subagent_type="TaskManager",
-  description="Brief description",
-  prompt="Detailed instructions for the subagent"
+subagent(agent: "subagents/core/task-manager",
+  description: "Brief description",
+  prompt: "Detailed instructions for the subagent"
 )
 ```
 
@@ -139,7 +156,7 @@ task(
 
        4. Initial Discovery (REQUIRED):
           Use ContextScout to explore BEFORE planning to ensure plan is grounded in reality:
-          task(subagent_type="ContextScout", description="Explore context for...", ...)
+          subagent(agent: "subagents/core/contextscout", description: "Explore context for...", ...)
        
        5. Decide execution path:
          - Question (no execution) → Answer directly, skip to Stage 6
@@ -371,10 +388,9 @@ task(
         
         5. Delegate to subagent with context path:
            
-           task(
-             subagent_type="TaskManager",
-             description="{brief description}",
-             prompt="Load context from .tmp/sessions/{session_id}/context.md
+           subagent(agent: "subagents/core/task-manager",
+             description: "{brief description}",
+             prompt: "Load context from .tmp/sessions/{session_id}/context.md
                      
                      Read the context file for full requirements and standards.
                      Load all context files listed in the 'Context Files to Load' section.
@@ -421,10 +437,9 @@ task(
         2. Delegate to subagent with inline context:
            
            <!-- Example: TestEngineer -->
-           task(
-             subagent_type="TestEngineer",
-             description="Write tests for {feature}",
-             prompt="Context to load:
+           subagent(agent: "subagents/code/test-engineer",
+             description: "Write tests for {feature}",
+             prompt: "Context to load:
                      - .opencode/context/core/standards/test-coverage.md
                      
                      Task: Write tests for {feature}
@@ -445,10 +460,9 @@ task(
            )
            
            <!-- Example: Reviewer -->
-           task(
-             subagent_type="CodeReviewer",
-             description="Review {feature} implementation",
-             prompt="Context to load:
+           subagent(agent: "subagents/code/reviewer",
+             description: "Review {feature} implementation",
+             prompt: "Context to load:
                      - .opencode/context/core/workflows/code-review.md
                      - .opencode/context/core/standards/code-quality.md
                      
@@ -471,10 +485,9 @@ task(
            )
            
            <!-- Example: Coder Agent -->
-           task(
-             subagent_type="CoderAgent",
-             description="Implement {subtask}",
-             prompt="Context to load:
+           subagent(agent: "subagents/code/coder-agent",
+             description: "Implement {subtask}",
+             prompt: "Context to load:
                      - .opencode/context/core/standards/code-quality.md
                      
                      Task: Implement subtask from tasks/subtasks/{feature}/{seq}-{task}.md
@@ -626,10 +639,9 @@ task(
          ELSE IF comprehensive docs (multi-page, new docs):
            Delegate to DocWriter subagent:
            
-           task(
-             subagent_type="DocWriter",
-             description="Update documentation for {feature}",
-             prompt="Context to load:
+           subagent(agent: "subagents/core/documentation",
+             description: "Update documentation for {feature}",
+             prompt: "Context to load:
                      - .opencode/context/core/standards/documentation.md
                      
                      Task: Update documentation for {feature}
@@ -798,7 +810,7 @@ task(
     <stage_4_execute>
       Decision: Simple task → Execute directly (Step 4C)
       
-      1. Create .opencode/agent/data/data-analyst.md:
+      1. Create .opencode/agents/data/data-analyst.md:
          - Add proper frontmatter
          - Write agent prompt
          - Follow modular patterns
@@ -934,10 +946,9 @@ task(
          ```
       
       3. Delegate to TaskManager:
-         task(
-           subagent_type="TaskManager",
-           description="Break down parallel test execution feature",
-           prompt="Load context from .tmp/sessions/20250114-143022-parallel-tests/context.md
+         subagent(agent: "subagents/core/task-manager",
+           description: "Break down parallel test execution feature",
+           prompt: "Load context from .tmp/sessions/20250114-143022-parallel-tests/context.md
                    
                    Break down this feature into atomic subtasks.
                    Follow all requirements in context file.
@@ -961,10 +972,9 @@ task(
          ✅ Passed
       
       2. Delegate to TestEngineer:
-         task(
-           subagent_type="TestEngineer",
-           description="Validate parallel execution tests",
-           prompt="Context to load:
+         subagent(agent: "subagents/code/test-engineer",
+           description: "Validate parallel execution tests",
+           prompt: "Context to load:
                    - .opencode/context/core/standards/test-coverage.md
                    
                    Validate test coverage for parallel execution
@@ -974,10 +984,9 @@ task(
          ✅ Coverage validated
       
       3. Delegate to CodeReviewer:
-         task(
-           subagent_type="CodeReviewer",
-           description="Review parallel execution implementation",
-           prompt="Context to load:
+         subagent(agent: "subagents/code/reviewer",
+           description: "Review parallel execution implementation",
+           prompt: "Context to load:
                    - .opencode/context/core/workflows/code-review.md
                    
                    Review parallel test execution implementation
@@ -989,10 +998,9 @@ task(
     
     <stage_6_complete>
       1. Delegate to DocWriter:
-         task(
-           subagent_type="DocWriter",
-           description="Update eval framework docs",
-           prompt="Load context from .tmp/sessions/20250114-143022-parallel-tests/context.md
+         subagent(agent: "subagents/core/documentation",
+           description: "Update eval framework docs",
+           prompt: "Load context from .tmp/sessions/20250114-143022-parallel-tests/context.md
                    
                    Update documentation for parallel test execution.
                    What changed: Added parallel execution capability

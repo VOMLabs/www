@@ -105,11 +105,10 @@ grep -r "postinstall\|preinstall" package.json
 **Use ExternalScout** to get live, version-specific documentation:
 
 ```bash
-# Invoke ExternalScout via task tool
-task(
-  subagent_type="ExternalScout",
-  description="Fetch Drizzle ORM documentation",
-  prompt="Fetch current documentation for Drizzle ORM focusing on:
+# Invoke ExternalScout via subagent tool
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch Drizzle ORM documentation",
+  prompt: "Fetch current documentation for Drizzle ORM focusing on:
           - Modular schema patterns
           - Next.js integration
           - Database setup

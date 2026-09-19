@@ -46,10 +46,9 @@ A structured 4-stage workflow for creating and iterating on UI designs. This pro
 
 ```javascript
 // For UI design work
-task(
-  subagent_type="OpenFrontendSpecialist",
-  description="Design {feature} UI",
-  prompt="Design a {feature} following the 4-stage workflow:
+subagent(agent: "subagents/development/frontend-specialist",
+  description: "Design {feature} UI",
+  prompt: "Design a {feature} following the 4-stage workflow:
   
   Requirements:
   - {requirement 1}

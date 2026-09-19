@@ -138,10 +138,9 @@ In your main agent (before approval):
 const externalLibraries = ["drizzle-orm", "better-auth", "next.js"];
 
 // Call ExternalScout
-task(
-  subagent_type="ExternalScout",
-  description="Fetch external documentation",
-  prompt="Fetch documentation for these libraries:
+subagent(agent: "subagents/core/externalscout",
+  description: "Fetch external documentation",
+  prompt: "Fetch documentation for these libraries:
           - Drizzle ORM: modular schema organization
           - Better Auth: Next.js integration
           - Next.js: App Router setup
@@ -250,10 +249,9 @@ These are live documentation files fetched from external libraries. Subagents sh
 ### Step 4: Delegate to TaskManager
 
 ```javascript
-task(
-  subagent_type="TaskManager",
-  description="Break down Drizzle + Better Auth integration",
-  prompt="Load context from .tmp/sessions/2026-01-28-drizzle-auth/context.md
+subagent(agent: "subagents/core/task-manager",
+  description: "Break down Drizzle + Better Auth integration",
+  prompt: "Load context from .tmp/sessions/2026-01-28-drizzle-auth/context.md
 
           Read the context file for full requirements, standards, and external documentation.
           

@@ -17,10 +17,9 @@
 
 **Delegation pattern:**
 ```javascript
-task(
-  subagent_type="OpenFrontendSpecialist",
-  description="Design {feature} UI",
-  prompt="Load context from .tmp/sessions/{session-id}/context.md
+subagent(agent: "subagents/development/frontend-specialist",
+  description: "Design {feature} UI",
+  prompt: "Load context from .tmp/sessions/{session-id}/context.md
   
   Design {feature} following 4-stage workflow:
   1. Stage 0: Create design plan file (MANDATORY FIRST)
@@ -47,10 +46,9 @@ task(
 
 **Delegation pattern:**
 ```javascript
-task(
-  subagent_type="TestEngineer",
-  description="Write tests for {feature}",
-  prompt="Load context from .tmp/sessions/{session-id}/context.md
+subagent(agent: "subagents/code/test-engineer",
+  description: "Write tests for {feature}",
+  prompt: "Load context from .tmp/sessions/{session-id}/context.md
   
   Write comprehensive tests for {feature}
   Files to test: {file list}
@@ -70,10 +68,9 @@ task(
 
 **Delegation pattern:**
 ```javascript
-task(
-  subagent_type="CodeReviewer",
-  description="Review {feature}",
-  prompt="Load context from .tmp/sessions/{session-id}/context.md
+subagent(agent: "subagents/code/reviewer",
+  description: "Review {feature}",
+  prompt: "Load context from .tmp/sessions/{session-id}/context.md
   
   Review {feature} against standards
   Files: {file list}
@@ -92,10 +89,9 @@ task(
 
 **Delegation pattern:**
 ```javascript
-task(
-  subagent_type="CoderAgent",
-  description="Implement {subtask}",
-  prompt="Load context from .tmp/sessions/{session-id}/context.md
+subagent(agent: "subagents/code/coder-agent",
+  description: "Implement {subtask}",
+  prompt: "Load context from .tmp/sessions/{session-id}/context.md
   
   Implement subtask: {description}
   Follow implementation spec exactly.

@@ -212,10 +212,9 @@ Create a context bundle when:
 
 4. **Pass to subagent**:
    ```javascript
-   task(
-     subagent_type="subagents/core/{subagent}",
-     description="Brief description",
-     prompt="Load context from .tmp/context/{session-id}/bundle.md before starting.
+   subagent(agent: "subagents/core/{subagent}",
+     description: "Brief description",
+     prompt: "Load context from .tmp/context/{session-id}/bundle.md before starting.
              
              {Specific task instructions}
              

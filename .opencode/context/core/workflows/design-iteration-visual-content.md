@@ -13,10 +13,9 @@ Delegate to **Image Specialist** subagent when users request:
 ## Invocation Pattern
 
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate/edit visual content",
-  prompt="Context to load:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate/edit visual content",
+  prompt: "Context to load:
           - .opencode/context/core/visual-development.md
           
           Task: [Specific visual requirement]
@@ -36,10 +35,9 @@ task(
 ### Architecture Diagram
 
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate microservices architecture diagram",
-  prompt="Create a diagram showing:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate microservices architecture diagram",
+  prompt: "Create a diagram showing:
           - 5 microservices (API Gateway, Auth, Orders, Payments, Notifications)
           - Database connections
           - Message queue (RabbitMQ)
@@ -53,10 +51,9 @@ task(
 ### UI Mockup
 
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate dashboard mockup",
-  prompt="Create a mockup for an analytics dashboard:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate dashboard mockup",
+  prompt: "Create a mockup for an analytics dashboard:
           - Header with navigation
           - 4 metric cards (Users, Revenue, Conversion, Retention)
           - Line chart showing trends
@@ -70,10 +67,9 @@ task(
 ### Social Media Graphic
 
 ```javascript
-task(
-  subagent_type="Image Specialist",
-  description="Generate product launch graphic",
-  prompt="Create a social media graphic announcing new feature:
+subagent(agent: "subagents/utils/image-specialist",
+  description: "Generate product launch graphic",
+  prompt: "Create a social media graphic announcing new feature:
           - Bold headline: 'Introducing Real-Time Collaboration'
           - Subtext: 'Work together, ship faster'
           - Brand colors: #6366f1 (primary), #1e293b (dark)

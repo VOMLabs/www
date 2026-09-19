@@ -18,10 +18,11 @@ export interface EnvLoaderConfig {
  */
 const DEFAULT_ENV_PATHS = [
   './.env',
-  '../.env', 
+  '../.env',
   '../../.env',
-  '../plugin/.env',
-  '../../../.env'
+  '../../../.env',
+  '../.env.local',
+  './.env.local',
 ]
 
 /**
@@ -73,7 +74,8 @@ export async function loadEnvVariables(config: EnvLoaderConfig = {}): Promise<Re
     } catch (error) {
       // File doesn't exist or can't be read, continue to next
       if (verbose) {
-        console.log(`Could not read ${envPath}: ${error.message}`)
+        const message = error instanceof Error ? error.message : String(error)
+        console.log(`Could not read ${envPath}: ${message}`)
       }
     }
   }

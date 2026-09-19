@@ -1,53 +1,80 @@
-<!-- Context: openagents-repo/tools | Priority: low | Version: 1.0 | Updated: 2026-02-15 -->
+<!-- Context: openagents-repo/tools | Priority: low | Version: 2.0 | Updated: 2026-09-19 -->
 
 # Building Custom Tools
 
-Plugins can add custom tools that OpenCode agents can call autonomously.
+Plugins can add custom tools that OpenCode agents can call autonomously (OpenCode v2 plugin API).
 
 ## Tool Definition
 
-Custom tools use Zod for schema definition and the `tool` helper from `@opencode-ai/plugin`.
+Custom tools are registered from a v2 plugin (`.opencode/plugins/<name>/index.ts`) using `Plugin.define` and
+`ctx.tool.transform`. Tool inputs use JSON Schema; the execute callback returns `{ content }`.
 
 ```typescript
-import { z } from 'zod';
-import { tool } from '@opencode-ai/plugin';
+import { Plugin } from "@opencode/plugin"
 
-export const MyCustomTool = tool(
-  z.object({
-    query: z.string().describe('Search query'),
-    limit: z.number().default(10).describe('Results limit')
-  }),
-  async (args, context) => {
-    const { query, limit } = args;
-    // Implementation logic
-    return { success: true, data: [] };
-  }
-).describe('Search your database');
+export default Plugin.define({
+  id: "my-custom-tools",
+  async setup(ctx) {
+    await ctx.tool.transform((editor) => {
+      editor.add({
+        name: "search_database",
+        description: "Search your database",
+        input: {
+          type: "object",
+          properties: {
+            query: { type: "string", description: "Search query" },
+            limit: { type: "number", description: "Results limit" },
+          },
+          required: ["query"],
+        },
+        execute: async (args) => {
+          const { query, limit = 10 } = args as { query: string; limit?: number }
+          // Implementation logic
+          return { content: `Searched for "${query}" (limit ${limit})` }
+        },
+      })
+    })
+  },
+})
 ```
 
 ## Shell-based Tools
 
-You can leverage Bun's shell API (`$`) to run commands in any language.
+Plugins can spawn processes with `ctx.shell` (the server Shell domain) to run commands in any language.
 
 ```typescript
-export const PythonCalculatorTool = tool(
-  z.object({ expression: z.string() }),
-  async (args, context) => {
-    const { $ } = context;
-    const result = await $`python3 -c 'print(eval("${args.expression}"))'`;
-    return { result: result.stdout };
-  }
-).describe('Calculate mathematical expressions');
+import { Plugin } from "@opencode/plugin"
+
+export default Plugin.define({
+  id: "python-calculator",
+  setup(ctx) {
+    ctx.tool.transform((editor) => {
+      editor.add({
+        name: "calculate",
+        description: "Calculate mathematical expressions",
+        input: {
+          type: "object",
+          properties: { expression: { type: "string" } },
+          required: ["expression"],
+        },
+        async execute(args) {
+          const { expression } = args as { expression: string }
+          const { stdout } = await ctx.shell.run({ cmd: `python3 -c 'print(eval("${expression}"))'` })
+          return { content: stdout }
+        },
+      })
+    })
+  },
+})
 ```
 
 ## Integration
 
-To register tools in your plugin:
+The plugin directory name under `.opencode/plugins/` is the plugin `id`. Plugins are auto-discovered from
+`.opencode/plugins/`; no config entry is needed for local plugins. Dependencies (such as `@opencode/plugin`) are
+installed with `npm install` inside `.opencode/`.
 
-```typescript
-export const MyPlugin = async (context) => {
-  return {
-    tool: [MyCustomTool, PythonCalculatorTool]
-  };
-};
-```
+## Reference
+
+The reference implementation in this repo is `.opencode/plugins/gemini/index.ts`, which registers
+`gemini_generate_image`, `gemini_edit_image`, and `gemini_analyze_image`.

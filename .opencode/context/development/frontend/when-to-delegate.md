@@ -69,10 +69,9 @@ Before delegating to frontend-specialist, ensure:
 If you're unsure what context the frontend-specialist will need:
 
 ```javascript
-task(
-  subagent_type="ContextScout",
-  description="Find frontend design context",
-  prompt="Find design system standards, UI component patterns, animation guidelines, and responsive breakpoint conventions for frontend work."
+subagent(agent: "subagents/core/contextscout",
+  description: "Find frontend design context",
+  prompt: "Find design system standards, UI component patterns, animation guidelines, and responsive breakpoint conventions for frontend work."
 )
 ```
 
@@ -110,10 +109,9 @@ Wait for explicit user approval before delegating.
 **For simple delegation** (no session needed):
 
 ```javascript
-task(
-  subagent_type="frontend-specialist",
-  description="Create landing page design",
-  prompt="Context to load:
+subagent(agent: "frontend-specialist",
+  description: "Create landing page design",
+  prompt: "Context to load:
   - .opencode/context/ui/web/design-systems.md
   - .opencode/context/ui/web/ui-styling-standards.md
   - .opencode/context/ui/web/animation-basics.md
@@ -347,10 +345,9 @@ The frontend-specialist will automatically load these via ContextScout:
 
 **After Approval**:
 ```javascript
-task(
-  subagent_type="frontend-specialist",
-  description="Create SaaS landing page",
-  prompt="Context to load:
+subagent(agent: "frontend-specialist",
+  description: "Create SaaS landing page",
+  prompt: "Context to load:
   - .opencode/context/ui/web/design-systems.md
   - .opencode/context/ui/web/ui-styling-standards.md
   - .opencode/context/ui/web/animation-basics.md
@@ -411,10 +408,9 @@ I'll update the button text directly.
 
 **After Approval**:
 ```javascript
-task(
-  subagent_type="frontend-specialist",
-  description="Implement Tailwind + Shadcn design system",
-  prompt="Context to load:
+subagent(agent: "frontend-specialist",
+  description: "Implement Tailwind + Shadcn design system",
+  prompt: "Context to load:
   - .opencode/context/ui/web/design-systems.md
   - .opencode/context/ui/web/ui-styling-standards.md
   

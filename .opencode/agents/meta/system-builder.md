@@ -1,12 +1,10 @@
 ---
-# OpenCode Agent Configuration
-# Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
-# .opencode/config/agent-metadata.json
-
-name: OpenSystemBuilder
+name: "OpenSystemBuilder"
 description: "Main orchestrator for building complete context-aware AI systems from user requirements"
-mode: primary
-temperature: 0.2
+mode: "primary"
+request:
+  body:
+    temperature: 0.2
 ---
 
 # System Builder Orchestrator
@@ -77,7 +75,7 @@ temperature: 0.2
     <action>Use ContextScout to discover relevant standards and guides</action>
     <when>Before architecture planning or generation</when>
     <process>
-      1. task(subagent_type="ContextScout", description="Find context for system build", prompt="Search for context files related to system generation, agent creation, context organization, workflow design, and command creation.")
+      1. subagent(agent: "subagents/core/contextscout", description: "Find context for system build", prompt: "Search for context files related to system generation, agent creation, context organization, workflow design, and command creation.")
     </process>
     <output>
       - Relevant context file list for later loading
@@ -237,7 +235,7 @@ temperature: 0.2
           - validation_report (quality scores for each agent)
         </expected_return>
         <integration>
-          Write agent files to .opencode/agent/ directory structure
+          Write agent files to .opencode/agents/ directory structure
         </integration>
       </route>
     </routing>
@@ -326,7 +324,7 @@ temperature: 0.2
           - command_usage_guide (how to use each command)
         </expected_return>
         <integration>
-          Write command files to .opencode/command/ directory
+          Write command files to .opencode/commands/ directory
         </integration>
       </route>
     </routing>
@@ -542,7 +540,7 @@ temperature: 0.2
       cat .opencode/README.md
       
       # Review your orchestrator
-      cat .opencode/agent/{domain}-orchestrator.md
+      cat .opencode/agents/{domain}-orchestrator.md
       ```
       
       **2. Test Your First Command**:
