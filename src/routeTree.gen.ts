@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LegalRouteImport } from './routes/legal'
@@ -19,16 +20,15 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as RefundRouteImport } from './routes/refund'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TosRouteImport } from './routes/tos'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminAccountsRouteImport } from './routes/admin/accounts'
-import { Route as AdminBlogsRouteImport } from './routes/admin/blogs'
 import { Route as AdminFaqRouteImport } from './routes/admin/faq'
-import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as BlogPostsIdRouteImport } from './routes/blog/posts/$id'
+import { Route as ApiUploadProfileRouteImport } from './routes/api/upload/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,6 +43,11 @@ const AdminRoute = AdminRouteImport.update({
 const CookiesRoute = CookiesRouteImport.update({
   id: '/cookies',
   path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -80,6 +85,11 @@ const RefundRoute = RefundRouteImport.update({
   path: '/refund',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -105,29 +115,19 @@ const AdminAccountsRoute = AdminAccountsRouteImport.update({
   path: '/accounts',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminBlogsRoute = AdminBlogsRouteImport.update({
-  id: '/blogs',
-  path: '/blogs',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminFaqRoute = AdminFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => AdminRoute,
-} as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogPostsIdRoute = BlogPostsIdRouteImport.update({
-  id: '/blog/posts/$id',
-  path: '/blog/posts/$id',
+const ApiUploadProfileRoute = ApiUploadProfileRouteImport.update({
+  id: '/api/upload/profile',
+  path: '/api/upload/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -135,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/cookies': typeof CookiesRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
@@ -142,20 +143,20 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/refund': typeof RefundRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/tos': typeof TosRoute
   '/admin/accounts': typeof AdminAccountsRoute
-  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/': typeof AdminIndexRoute
-  '/blog/': typeof BlogIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/blog/posts/$id': typeof BlogPostsIdRoute
+  '/api/upload/profile': typeof ApiUploadProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cookies': typeof CookiesRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
@@ -163,22 +164,22 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/refund': typeof RefundRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/tos': typeof TosRoute
   '/admin/accounts': typeof AdminAccountsRoute
-  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin': typeof AdminIndexRoute
-  '/blog': typeof BlogIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/blog/posts/$id': typeof BlogPostsIdRoute
+  '/api/upload/profile': typeof ApiUploadProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/cookies': typeof CookiesRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
@@ -186,16 +187,15 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/refund': typeof RefundRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/tos': typeof TosRoute
   '/admin/accounts': typeof AdminAccountsRoute
-  '/admin/blogs': typeof AdminBlogsRoute
   '/admin/faq': typeof AdminFaqRoute
   '/admin/': typeof AdminIndexRoute
-  '/blog/': typeof BlogIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/blog/posts/$id': typeof BlogPostsIdRoute
+  '/api/upload/profile': typeof ApiUploadProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -203,6 +203,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/cookies'
+    | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/legal'
@@ -210,20 +211,20 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/products'
     | '/refund'
+    | '/settings'
     | '/signup'
     | '/terms'
     | '/tos'
     | '/admin/accounts'
-    | '/admin/blogs'
     | '/admin/faq'
     | '/admin/'
-    | '/blog/'
     | '/api/auth/$'
-    | '/blog/posts/$id'
+    | '/api/upload/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/cookies'
+    | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/legal'
@@ -231,21 +232,21 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/products'
     | '/refund'
+    | '/settings'
     | '/signup'
     | '/terms'
     | '/tos'
     | '/admin/accounts'
-    | '/admin/blogs'
     | '/admin/faq'
     | '/admin'
-    | '/blog'
     | '/api/auth/$'
-    | '/blog/posts/$id'
+    | '/api/upload/profile'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/cookies'
+    | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/legal'
@@ -253,22 +254,22 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/products'
     | '/refund'
+    | '/settings'
     | '/signup'
     | '/terms'
     | '/tos'
     | '/admin/accounts'
-    | '/admin/blogs'
     | '/admin/faq'
     | '/admin/'
-    | '/blog/'
     | '/api/auth/$'
-    | '/blog/posts/$id'
+    | '/api/upload/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   CookiesRoute: typeof CookiesRoute
+  DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   LegalRoute: typeof LegalRoute
@@ -276,12 +277,12 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRoute
   RefundRoute: typeof RefundRoute
+  SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   TosRoute: typeof TosRoute
-  BlogIndexRoute: typeof BlogIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  BlogPostsIdRoute: typeof BlogPostsIdRoute
+  ApiUploadProfileRoute: typeof ApiUploadProfileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,6 +306,13 @@ declare module '@tanstack/react-router' {
       path: '/cookies'
       fullPath: '/cookies'
       preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -356,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RefundRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -391,26 +406,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAccountsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/blogs': {
-      id: '/admin/blogs'
-      path: '/blogs'
-      fullPath: '/admin/blogs'
-      preLoaderRoute: typeof AdminBlogsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/faq': {
       id: '/admin/faq'
       path: '/faq'
       fullPath: '/admin/faq'
       preLoaderRoute: typeof AdminFaqRouteImport
       parentRoute: typeof AdminRoute
-    }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -419,11 +420,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/posts/$id': {
-      id: '/blog/posts/$id'
-      path: '/blog/posts/$id'
-      fullPath: '/blog/posts/$id'
-      preLoaderRoute: typeof BlogPostsIdRouteImport
+    '/api/upload/profile': {
+      id: '/api/upload/profile'
+      path: '/api/upload/profile'
+      fullPath: '/api/upload/profile'
+      preLoaderRoute: typeof ApiUploadProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -431,14 +432,12 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAccountsRoute: typeof AdminAccountsRoute
-  AdminBlogsRoute: typeof AdminBlogsRoute
   AdminFaqRoute: typeof AdminFaqRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAccountsRoute: AdminAccountsRoute,
-  AdminBlogsRoute: AdminBlogsRoute,
   AdminFaqRoute: AdminFaqRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -449,6 +448,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CookiesRoute: CookiesRoute,
+  DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   LegalRoute: LegalRoute,
@@ -456,12 +456,12 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRoute,
   RefundRoute: RefundRoute,
+  SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   TosRoute: TosRoute,
-  BlogIndexRoute: BlogIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  BlogPostsIdRoute: BlogPostsIdRoute,
+  ApiUploadProfileRoute: ApiUploadProfileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,40 +1,30 @@
 "use client";
 
-import Xmark from "@gravity-ui/icons/Xmark";
+import CircleQuestion from "@gravity-ui/icons/CircleQuestion";
+import House from "@gravity-ui/icons/House";
+import Person from "@gravity-ui/icons/Person";
+import ShoppingBag from "@gravity-ui/icons/ShoppingBag";
 import { useRouterState } from "@tanstack/react-router";
-import { useEffect } from "react";
 
 import { Link } from "@/components/link";
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import { createLogger } from "@/lib/logger";
+import { cn } from "@/lib/utils";
 
-import {
-  authLabels,
-  externalLinks,
-  navLinks,
-  socialLinks,
-  type NavSession,
-} from "./nav-config";
-import { openExternal, signOutUser } from "./nav-utils";
+import { authLabels, type NavSession } from "./nav-config";
+import { signOutUser } from "./nav-utils";
 
-const logger = createLogger("Navbar");
-
-const itemClassName =
-  "text-foreground/90 hover:bg-muted flex items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors duration-200";
+const tabs = [
+  { label: "Home", to: "/", icon: House },
+  { label: "Products", to: "/products", icon: ShoppingBag },
+  { label: "FAQ", to: "/faq", icon: CircleQuestion },
+] as const;
 
 /**
- * Mobile (<lg) slide-out navigation drawer. Closes on route change and on
- * every link click so navigation never leaves a stale overlay behind.
+ * Fixed bottom tab bar for mobile (<lg). Hidden on desktop.
+ * Replaces the slide-out drawer with always-visible touch-friendly navigation.
  */
 export function NavMobileDrawer({
-  open,
-  onOpenChange,
+  open: _open,
+  onOpenChange: _onOpenChange,
   session,
 }: {
   open: boolean;
@@ -45,98 +35,56 @@ export function NavMobileDrawer({
     select: (state) => state.location.pathname,
   });
 
-  useEffect(() => {
-    if (open) {
-      logger.debug("Mobile drawer opened");
-    }
-  }, [open]);
-
-  useEffect(() => {
-    onOpenChange(false);
-  }, [pathname, onOpenChange]);
-
-  const close = () => onOpenChange(false);
-
   return (
-    <Drawer direction="right" onOpenChange={onOpenChange} open={open}>
-      <DrawerContent>
-        <DrawerHeader>
-          <div className="flex items-center justify-between">
-            <DrawerTitle>Navigation</DrawerTitle>
-            <Button
-              aria-label="Close menu"
-              onClick={close}
-              size="icon-sm"
-              variant="ghost"
-            >
-              <Xmark strokeWidth={2} />
-            </Button>
-          </div>
-        </DrawerHeader>
-        <div className="flex flex-col gap-1 overflow-y-auto px-3 pb-6">
-          {externalLinks.map((link) => (
+    <nav
+      aria-label="Mobile navigation"
+      className="border-border bg-background/95 fixed inset-x-0 bottom-0 z-50 border-t backdrop-blur-md lg:hidden"
+    >
+      <ul className="flex items-stretch justify-around px-2 py-1">
+        {tabs.map((tab) => {
+          const isActive =
+            pathname === tab.to ||
+            (tab.to !== "/" && pathname.startsWith(tab.to));
+          const Icon = tab.icon;
+          return (
+            <li key={tab.to}>
+              <Link
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "flex min-w-[48px] flex-col items-center gap-0.5 rounded-lg px-3 py-2 text-[10px] font-medium transition-colors",
+                  isActive
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+                to={tab.to}
+              >
+                <Icon className="size-5" />
+                {tab.label}
+              </Link>
+            </li>
+          );
+        })}
+        <li>
+          {session ? (
             <button
-              className={itemClassName}
-              key={link.label}
-              onClick={() => {
-                close();
-                openExternal(link.href, link.label);
-              }}
+              className="text-muted-foreground hover:text-foreground flex min-w-[48px] flex-col items-center gap-0.5 rounded-lg px-3 py-2 text-[10px] font-medium transition-colors"
+              onClick={() => void signOutUser()}
               type="button"
             >
-              {link.label}
+              <Person className="size-5" />
+              {authLabels.signOut}
             </button>
-          ))}
-          {navLinks.map((link) => (
-            <Link
-              className={itemClassName}
-              key={link.to}
-              onClick={close}
-              to={link.to}
-            >
-              {link.label}
-            </Link>
-          ))}
-          {session ? (
-            <>
-              {session.user.role === "admin" && (
-                <Link className={itemClassName} onClick={close} to="/admin">
-                  {authLabels.dashboard}
-                </Link>
-              )}
-              <button
-                className={itemClassName}
-                onClick={() => {
-                  close();
-                  void signOutUser();
-                }}
-                type="button"
-              >
-                {authLabels.signOut}
-              </button>
-            </>
           ) : (
-            <Link className={itemClassName} onClick={close} to="/login">
+            <Link
+              className="text-muted-foreground hover:text-foreground flex min-w-[48px] flex-col items-center gap-0.5 rounded-lg px-3 py-2 text-[10px] font-medium transition-colors"
+              to="/login"
+            >
+              <Person className="size-5" />
               {authLabels.signIn}
             </Link>
           )}
-          <div className="bg-border my-2 h-px" />
-          {socialLinks.map(({ icon: Icon, ...link }) => (
-            <button
-              className={itemClassName}
-              key={link.label}
-              onClick={() => {
-                close();
-                openExternal(link.href, link.label);
-              }}
-              type="button"
-            >
-              <Icon className="size-4" />
-              {link.label}
-            </button>
-          ))}
-        </div>
-      </DrawerContent>
-    </Drawer>
+        </li>
+      </ul>
+    </nav>
   );
 }

@@ -7,6 +7,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { MotionConfig } from "motion/react";
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import { useEffect } from "react";
 
@@ -70,7 +71,11 @@ export const Route = createRootRoute({
       </div>
     </main>
   ),
-  errorComponent: ({ error }) => <ErrorPage error={error} />,
+  errorComponent: ({ error }) => (
+    <ErrorPage
+      error={error instanceof Error ? error : new Error(String(error))}
+    />
+  ),
   component: RootLayout,
   shellComponent: RootDocument,
 });
@@ -123,16 +128,18 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          <ErrorBoundary>
-            <Navbar />
-            <TooltipProvider>
-              <div className="flex min-h-dvh flex-col">
-                <div className="flex-1">{children}</div>
-                <Footer />
-              </div>
-            </TooltipProvider>
-            <Toaster />
-          </ErrorBoundary>
+          <MotionConfig reducedMotion="user">
+            <ErrorBoundary>
+              <Navbar />
+              <TooltipProvider>
+                <div className="flex min-h-dvh flex-col">
+                  <div className="flex-1">{children}</div>
+                  <Footer />
+                </div>
+              </TooltipProvider>
+              <Toaster />
+            </ErrorBoundary>
+          </MotionConfig>
         </ThemeProvider>
         <GlobalErrorListener />
         <TanStackDevtools

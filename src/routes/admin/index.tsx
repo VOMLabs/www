@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminDashboard() {
-  const { faqCount, postCount, userCount } = Route.useLoaderData();
+  const { faqCount, userCount } = Route.useLoaderData();
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">
@@ -18,21 +18,13 @@ function AdminDashboard() {
         </p>
         <h1 className="section-title">Dashboard</h1>
       </div>
-      <div className="border-border bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
+      <div className="border-border bg-border grid grid-cols-1 gap-px sm:grid-cols-2">
         <div className="bg-background rounded-lg p-6">
           <p className="text-muted-foreground font-mono text-xs tracking-[0.15em] uppercase">
             FAQ Items
           </p>
           <p className="mt-3 text-3xl font-medium tracking-[-0.02em]">
             {faqCount}
-          </p>
-        </div>
-        <div className="bg-background rounded-lg p-6">
-          <p className="text-muted-foreground font-mono text-xs tracking-[0.15em] uppercase">
-            Blog Posts
-          </p>
-          <p className="mt-3 text-3xl font-medium tracking-[-0.02em]">
-            {postCount}
           </p>
         </div>
         <div className="bg-background rounded-lg p-6">

@@ -1,163 +1,85 @@
 "use client";
 
-import LogoGithub from "@gravity-ui/icons/LogoGithub";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { DiscordIcon } from "@/components/icons/discord";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { createLogger } from "@/lib/logger";
-import { cn } from "@/lib/utils";
+
+import { GitHubOrgDialog } from "./github-org-dialog";
+import { ScrollIndicator } from "./scroll-indicator";
 
 const logger = createLogger("Hero");
 
-const githubOrgs = [
-  {
-    name: "VOMLabs",
-    url: "https://github.com/VOMLabs",
-    description: "Open source projects & tools",
-  },
-  {
-    name: "VOMHost",
-    url: "https://github.com/VOMHost",
-    description: "Hosting & infrastructure",
-  },
-] as const;
-
 export function Hero() {
-  const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    logger.debug("Hero section mounted");
-  }, []);
-
   return (
-    <section className="flex min-h-dvh flex-col justify-center px-6">
-      <div className="container-editorial">
-        <div className="flex max-w-3xl flex-col items-start gap-8">
-          <p className="eyebrow">
+    <section className="relative flex min-h-dvh flex-col justify-center overflow-hidden px-6">
+      {/* Ambient gradient orb */}
+      <div
+        aria-hidden="true"
+        className="hero-orb top-1/4 -right-32 h-[500px] w-[500px] sm:h-[600px] sm:w-[600px]"
+      />
+      <div
+        aria-hidden="true"
+        className="hero-orb top-[60%] -left-48 h-[400px] w-[400px] opacity-[0.06] sm:h-[500px] sm:w-[500px]"
+      />
+
+      <div className="container-editorial py-20 md:py-0">
+        <div className="flex max-w-3xl flex-col items-start gap-10">
+          <p className="eyebrow animate-fade-up motion-reduce:animate-none">
             <span className="eyebrow-dot" />
             Building the future of developer tools
           </p>
           <div
-            className={cn(
-              "flex flex-col gap-5",
-              mounted && "animate-fade-up motion-reduce:animate-none",
-            )}
+            className="animate-fade-up flex flex-col gap-6 motion-reduce:animate-none"
+            style={{ animationDelay: "100ms" }}
           >
             <h1 className="display">VOMLabs</h1>
-            <h2 className="text-foreground max-w-xl text-xl font-normal tracking-[-0.01em] md:text-2xl">
+            <h2 className="text-foreground max-w-xl text-xl font-normal tracking-[-0.01em] sm:text-2xl lg:text-3xl">
               Modern software, built by developers, for developers.
             </h2>
-            <p className="lead max-w-md">
+            <p className="lead max-w-lg">
               We create high-performance tools, premium libraries, and
               developer-focused solutions — crafted with care and built to last.
             </p>
           </div>
-          {mounted && (
-            <div className="flex flex-wrap gap-3">
-              <Dialog onOpenChange={setOpen} open={open}>
-                <DialogTrigger
-                  render={
-                    <Button
-                      onClick={() => {
-                        logger.info("GitHub dialog trigger clicked");
-                      }}
-                    >
-                      <LogoGithub className="size-4" />
-                      GitHub
-                    </Button>
-                  }
-                />
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Select an Organization</DialogTitle>
-                    <DialogDescription>
-                      Choose which GitHub organization you&apos;d like to visit.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex flex-col gap-2 pt-2">
-                    {githubOrgs.map((org) => (
-                      <a
-                        className="border-border hover:bg-muted flex items-center gap-3 rounded-lg border p-3 transition-colors duration-150"
-                        href={org.url}
-                        key={org.name}
-                        onClick={() => {
-                          try {
-                            logger.info("GitHub org link clicked", {
-                              name: org.name,
-                              url: org.url,
-                            });
-                            setOpen(false);
-                            toast.info(`Opening ${org.name}...`, {
-                              duration: 2000,
-                            });
-                          } catch (error) {
-                            logger.error("Failed to open GitHub org", {
-                              name: org.name,
-                              error:
-                                error instanceof Error
-                                  ? error.message
-                                  : String(error),
-                            });
-                          }
-                        }}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <LogoGithub className="size-5" />
-                        <div className="flex flex-col text-left">
-                          <span className="text-sm font-medium">
-                            {org.name}
-                          </span>
-                          <span className="text-muted-foreground text-xs">
-                            {org.description}
-                          </span>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </DialogContent>
-              </Dialog>
-              <Button
-                onClick={() => {
-                  try {
-                    logger.info("Discord button clicked", {
-                      url: "https://discord.vomlabs.com",
-                    });
-                    toast.info("Opening Discord...", { duration: 2000 });
-                    window.open(
-                      "https://discord.vomlabs.com",
-                      "_blank",
-                      "noopener,noreferrer",
-                    );
-                  } catch (error) {
-                    logger.error("Failed to open Discord", {
-                      error:
-                        error instanceof Error ? error.message : String(error),
-                    });
-                    toast.error("Failed to open Discord. Please try again.");
-                  }
-                }}
-                variant="outline"
-              >
-                <DiscordIcon className="size-4" />
-                Join the Discord
-              </Button>
-            </div>
-          )}
+          <div
+            className="animate-fade-up flex flex-col gap-3 motion-reduce:animate-none sm:flex-row sm:gap-4"
+            style={{ animationDelay: "200ms" }}
+          >
+            <GitHubOrgDialog />
+            <Button
+              size="hero"
+              variant="outline"
+              onClick={() => {
+                try {
+                  logger.info("Discord button clicked", {
+                    url: "https://discord.vomlabs.com",
+                  });
+                  toast.info("Opening Discord...", { duration: 2000 });
+                  window.open(
+                    "https://discord.vomlabs.com",
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                } catch (error) {
+                  logger.error("Failed to open Discord", {
+                    error:
+                      error instanceof Error ? error.message : String(error),
+                  });
+                  toast.error("Failed to open Discord. Please try again.");
+                }
+              }}
+            >
+              <DiscordIcon className="size-4" />
+              Join the Discord
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <ScrollIndicator />
     </section>
   );
 }

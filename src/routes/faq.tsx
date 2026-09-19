@@ -1,6 +1,6 @@
 import Magnifier from "@gravity-ui/icons/Magnifier";
 import { createFileRoute } from "@tanstack/react-router";
-import { parseAsString, useQueryState } from "nuqs";
+import { useMemo, useState } from "react";
 
 import { getAllFaqs } from "@/lib/db/functions";
 
@@ -12,31 +12,31 @@ export const Route = createFileRoute("/faq")({
   component: FaqPage,
 });
 
+/**
+ * True subsequence fuzzy match — characters must appear in order but not
+ * contiguously.  Trailing whitespace in the query is ignored.
+ */
 function fuzzyMatch(text: string, query: string): boolean {
   const lowerText = text.toLowerCase();
   const lowerQuery = query.toLowerCase().trim();
-  if (!lowerQuery) {
-    return true;
-  }
+  if (!lowerQuery) return true;
   let qi = 0;
   for (let ti = 0; ti < lowerText.length && qi < lowerQuery.length; ti++) {
-    if (lowerText[ti] === lowerQuery[qi]) {
-      qi++;
-    }
+    if (lowerText[ti] === lowerQuery[qi]) qi++;
   }
   return qi === lowerQuery.length;
 }
 
 function FaqPage() {
   const { faqs: allFaqs } = Route.useLoaderData();
-  const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
+  const [query, setQuery] = useState("");
 
-  const filtered = query.trim()
-    ? allFaqs.filter(
-        (faq) =>
-          fuzzyMatch(faq.question, query) || fuzzyMatch(faq.answer, query),
-      )
-    : allFaqs;
+  const filtered = useMemo(() => {
+    if (!query.trim()) return allFaqs;
+    return allFaqs.filter(
+      (faq) => fuzzyMatch(faq.question, query) || fuzzyMatch(faq.answer, query),
+    );
+  }, [allFaqs, query]);
 
   return (
     <main className="border-border border-t">
@@ -55,8 +55,8 @@ function FaqPage() {
           <Magnifier className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <input
             aria-label="Search questions"
-            className="border-border bg-background placeholder:text-muted-foreground focus:border-foreground h-10 w-full border pr-3 pl-9 text-sm outline-none"
-            onChange={(e) => setQuery(e.target.value || null)}
+            className="border-border bg-background placeholder:text-muted-foreground focus:border-foreground h-10 w-full border pr-3 pl-8 text-sm outline-none"
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search questions..."
             type="text"
             value={query}

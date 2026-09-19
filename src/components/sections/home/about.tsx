@@ -53,16 +53,16 @@ export function About() {
               className="group grid gap-2 py-6 md:grid-cols-[3rem_1fr_1.4fr] md:gap-8 md:py-8"
               key={item.title}
             >
-              <span className="text-muted-foreground/60 font-mono text-xs">
+              <span className="text-muted-foreground/60 hidden font-mono text-xs sm:block">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div className="flex items-center gap-3">
-                <Icon className="text-lime-dim dark:text-lime size-4 shrink-0" />
-                <h3 className="text-lg font-medium tracking-[-0.01em] transition-transform duration-200 group-hover:translate-x-0.5 md:text-xl">
+                <Icon className="text-lime-dim dark:text-lime size-5 shrink-0" />
+                <h3 className="text-base font-medium tracking-[-0.01em] transition-transform duration-200 group-hover:translate-x-0.5 sm:text-lg md:text-xl">
                   {item.title}
                 </h3>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm">
                 {item.description}
               </p>
             </li>

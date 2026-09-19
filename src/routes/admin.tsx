@@ -40,7 +40,6 @@ export const Route = createFileRoute("/admin")({
 const sidebarItems = [
   { label: "Dashboard", to: "/admin" },
   { label: "FAQ", to: "/admin/faq" },
-  { label: "Blog Posts", to: "/admin/blogs" },
   { label: "Accounts", to: "/admin/accounts" },
 ];
 
@@ -49,7 +48,7 @@ function AdminLayout() {
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <Link className="flex items-center gap-2.5 px-2" to="/">
+          <Link className="flex items-center gap-2 px-2" to="/">
             <Logo className="size-6" />
             <span className="text-sm font-bold">VOMLabs Admin</span>
           </Link>

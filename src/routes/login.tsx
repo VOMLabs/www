@@ -29,54 +29,61 @@ function LoginPage() {
 
   return (
     <main className="border-border border-t">
-      <div className="container-editorial flex flex-col items-start py-16 md:py-24">
-        <div className="flex w-full max-w-sm flex-col gap-8">
-          <header className="flex flex-col gap-4">
-            <p className="eyebrow">
+      <div className="container-editorial flex min-h-[80vh] items-center py-16 md:py-24">
+        <div className="mx-auto w-full max-w-md">
+          {/* Header */}
+          <div className="mb-10 text-center">
+            <p className="eyebrow justify-center">
               <span className="eyebrow-dot" />
               Account
             </p>
-            <h1 className="display">Sign In</h1>
-            <p className="lead">
-              Enter your credentials to access your account.
+            <h1 className="display mt-4 text-4xl sm:text-5xl">Welcome back</h1>
+            <p className="lead mt-3">
+              Sign in to access your dashboard, licenses, and downloads.
             </p>
-          </header>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                autoComplete="email"
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                type="email"
-                value={email}
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                autoComplete="current-password"
-                id="password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                type="password"
-                value={password}
-              />
-            </div>
-            <Button disabled={loading} type="submit">
-              {loading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-          <p className="text-muted-foreground text-sm">
+          </div>
+
+          {/* Card */}
+          <div className="border-border bg-card rounded-2xl border p-8 shadow-sm">
+            <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  autoComplete="email"
+                  id="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  type="email"
+                  value={email}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  autoComplete="current-password"
+                  id="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  type="password"
+                  value={password}
+                />
+              </div>
+              <Button className="mt-1" disabled={loading} type="submit">
+                {loading ? "Signing in..." : "Sign In"}
+              </Button>
+            </form>
+          </div>
+
+          {/* Footer */}
+          <p className="text-muted-foreground mt-6 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link
-              className="text-foreground hover:text-foreground/80 underline underline-offset-4"
+              className="text-foreground font-medium underline-offset-4 hover:underline"
               to="/signup"
             >
-              Sign up
+              Create one
             </Link>
           </p>
         </div>

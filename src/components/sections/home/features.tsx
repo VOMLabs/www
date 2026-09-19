@@ -61,14 +61,14 @@ export function Features() {
           const Icon = feature.icon;
           return (
             <li
-              className="group bg-background hover:bg-muted/40 p-6 transition-colors duration-200"
+              className="group bg-background hover:bg-muted/40 p-6 transition-colors duration-200 sm:p-6"
               key={feature.title}
             >
-              <Icon className="text-lime-dim dark:text-lime size-4" />
-              <h3 className="mt-3 text-base font-medium tracking-[-0.01em]">
+              <Icon className="text-lime-dim dark:text-lime size-5" />
+              <h3 className="mt-3 text-sm font-medium tracking-[-0.01em] sm:text-base">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+              <p className="text-muted-foreground mt-1 text-xs leading-relaxed sm:text-sm">
                 {feature.description}
               </p>
             </li>
