@@ -1,65 +1,105 @@
 import { Link, useRouter } from "@tanstack/react-router";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { getErrorMessage, isDatabaseError } from "@/lib/errors";
 
-export function ErrorPage({
-  error,
-}: {
-  error: Error;
-  info?: { componentStack?: string };
-  reset?: () => void;
-}) {
+type ErrorStatus = 401 | 500 | 503;
+
+const isUnauthorized = (error: Error) => error.message === "Unauthorized";
+
+function classifyError(error: Error): {
+  status: ErrorStatus;
+  title: string;
+  description: string;
+  detail: string;
+} {
+  if (isUnauthorized(error)) {
+    return {
+      status: 401,
+      title: "Sign in required",
+      description: "This part of the site is only for signed-in users.",
+      detail:
+        "Sign in to access your dashboard, downloads, and account settings.",
+    };
+  }
+
+  if (isDatabaseError(error)) {
+    return {
+      status: 503,
+      title: "Database unavailable",
+      description: "We couldn't reach our database.",
+      detail:
+        "This is usually temporary — the database may be restarting or briefly unreachable. Please try again in a moment.",
+    };
+  }
+
+  return {
+    status: 500,
+    title: "Something went wrong",
+    description: "An unexpected error occurred.",
+    detail: "Please try again. If the problem persists, contact support.",
+  };
+}
+
+export function ErrorPage({ error }: { error: Error }) {
   const router = useRouter();
-  const isDbError = isDatabaseError(error);
+  const { status, title, description, detail } = classifyError(error);
   const message = getErrorMessage(error);
 
   return (
-    <main className="flex flex-col items-center justify-center px-6 py-24 text-center">
-      <div className="flex max-w-md flex-col items-center gap-6">
+    <main className="container-editorial flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+      <div className="flex max-w-md flex-col items-center gap-8">
+        <p className="eyebrow">
+          <span className="eyebrow-dot" />
+          Error {status}
+        </p>
+
         <div className="space-y-2">
-          <h1 className="text-5xl font-bold tracking-tight">
-            {isDbError ? "Database Unavailable" : "Something went wrong"}
-          </h1>
-          <p className="text-muted-foreground text-lg font-medium">
-            {isDbError
-              ? "We couldn't reach our database."
-              : "An unexpected error occurred."}
-          </p>
+          <h1 className="display">{title}</h1>
+          <p className="lead">{description}</p>
         </div>
 
         <p className="text-muted-foreground text-sm leading-relaxed">
-          {isDbError ? (
-            <>
-              This is usually temporary — the database may be restarting or
-              briefly unreachable. Please try again in a moment.
-            </>
-          ) : (
-            "Please try again. If the problem persists, contact support."
-          )}
+          {detail}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button
-            onClick={() => {
-              void router.invalidate();
-            }}
-            type="button"
-          >
-            Try again
-          </Button>
-          <Link
-            className="text-muted-foreground hover:text-foreground text-sm font-medium underline underline-offset-4"
-            to="/"
-          >
-            Go home
-          </Link>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          {status === 401 ? (
+            <>
+              <Link className={buttonVariants({ size: "lg" })} to="/login">
+                Sign in
+              </Link>
+              <Link
+                className="text-muted-foreground hover:text-foreground text-sm font-medium underline underline-offset-4"
+                to="/"
+              >
+                Back to home
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  void router.invalidate();
+                }}
+                type="button"
+              >
+                Try again
+              </Button>
+              <Link
+                className="text-muted-foreground hover:text-foreground text-sm font-medium underline underline-offset-4"
+                to="/"
+              >
+                Go home
+              </Link>
+            </>
+          )}
         </div>
 
         {message && import.meta.env?.DEV && (
-          <p className="border-border bg-muted text-muted-foreground w-full max-w-sm border px-4 py-2 text-left font-mono text-[11px] break-all">
+          <pre className="border-border bg-muted text-muted-foreground w-full max-w-sm overflow-x-auto border px-4 py-3 text-left font-mono text-[11px] break-all">
             {message}
-          </p>
+          </pre>
         )}
       </div>
     </main>
