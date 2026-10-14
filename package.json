@@ -28,7 +28,7 @@
     "@gravity-ui/icons": "^2.22.0",
     "@t3-oss/env-core": "^0.13.11",
     "@tailwindcss/vite": "^4.3.3",
-    "@tanstack/charts": "^0.18.0",
+    "@tanstack/charts": "^1.1.0",
     "@tanstack/markdown": "^0.0.15",
     "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-router": "^1.170.38",
