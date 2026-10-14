@@ -48,7 +48,7 @@ export function ErrorPage({ error }: { error: Error }) {
 
   return (
     <main className="container-editorial flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
-      <div className="flex max-w-md flex-col items-center gap-8">
+      <div className="animate-fade-up flex max-w-md flex-col items-center gap-8 motion-reduce:animate-none">
         <p className="eyebrow">
           <span className="eyebrow-dot" />
           Error {status}

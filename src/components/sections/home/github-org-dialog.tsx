@@ -97,7 +97,7 @@ export function GitHubOrgDialog() {
                   {org.description}
                 </span>
               </div>
-              <ArrowUpRight className="text-muted-foreground size-4 opacity-0 transition-opacity group-hover:opacity-100" />
+              <ArrowUpRight className="text-muted-foreground size-4 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:-translate-y-0" />
             </a>
           ))}
         </div>

@@ -156,7 +156,7 @@ function ProductsPage() {
                   {linkHref && (
                     <span className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm underline-offset-4 group-hover:underline">
                       {isExternal ? "Visit" : "Learn more"}
-                      <ArrowUpRight className="size-3.5" />
+                      <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:-translate-y-0" />
                     </span>
                   )}
                 </>

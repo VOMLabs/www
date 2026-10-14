@@ -9,7 +9,7 @@ import { externalLinks, navItems } from "./nav-config";
 import { NavMegaMenu } from "./NavMegaMenu";
 
 const linkClassName =
-  "text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] font-medium transition-colors duration-200";
+  "text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] font-medium transition-[color,transform] duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
 /** Maps internal nav labels to icons. */
 const internalIcons: Record<

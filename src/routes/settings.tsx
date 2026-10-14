@@ -166,7 +166,7 @@ function SettingsPage() {
 
         {/* Bento grid */}
         <div className="grid gap-6 md:grid-cols-6">
-          {/* ── Profile picture: spans 2 cols, 2 rows ── */}
+          {/* -- Profile picture: spans 2 cols, 2 rows -- */}
           <Card className="md:col-span-2 md:row-span-2">
             <CardHeader>
               <CardTitle>Profile Picture</CardTitle>
@@ -246,7 +246,7 @@ function SettingsPage() {
             </CardContent>
           </Card>
 
-          {/* ── Profile form: spans 4 cols ── */}
+          {/* -- Profile form: spans 4 cols -- */}
           <Card className="md:col-span-4">
             <CardHeader>
               <CardTitle>Profile</CardTitle>
@@ -317,7 +317,7 @@ function SettingsPage() {
             </CardContent>
           </Card>
 
-          {/* ── Account info: spans 3 cols ── */}
+          {/* -- Account info: spans 3 cols -- */}
           <Card className="md:col-span-3">
             <CardHeader>
               <CardTitle>Account</CardTitle>
@@ -340,7 +340,7 @@ function SettingsPage() {
             </CardContent>
           </Card>
 
-          {/* ── Member since: spans 3 cols ── */}
+          {/* -- Member since: spans 3 cols -- */}
           <Card className="md:col-span-3">
             <CardHeader>
               <CardTitle>History</CardTitle>

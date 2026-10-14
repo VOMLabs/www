@@ -49,7 +49,7 @@ function DashboardPage() {
 
         {/* Bento grid */}
         <div className="grid gap-6 md:grid-cols-6">
-          {/* ── Profile card: spans 2 cols, 2 rows ── */}
+          {/* -- Profile card: spans 2 cols, 2 rows -- */}
           <Card className="md:col-span-2 md:row-span-2">
             <CardContent className="flex h-full flex-col items-center gap-6 py-8">
               <Avatar className="size-24">
@@ -90,7 +90,7 @@ function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* ── Account info: spans 4 cols ── */}
+          {/* -- Account info: spans 4 cols -- */}
           <Card className="md:col-span-4">
             <CardContent className="py-6">
               <h3 className="text-muted-foreground mb-4 font-mono text-xs tracking-[0.15em] uppercase">
@@ -162,7 +162,7 @@ function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* ── Quick links: 3-col tiles ── */}
+          {/* -- Quick links: 3-col tiles -- */}
           {[
             {
               label: "Settings",
@@ -186,7 +186,7 @@ function DashboardPage() {
             <Card key={link.href}>
               <CardContent className="py-6">
                 <Link
-                  className="group flex flex-col gap-3"
+                  className="group flex flex-col gap-3 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                   to={link.href as never}
                 >
                   <div className="bg-muted group-hover:bg-foreground/10 flex size-9 items-center justify-center rounded-lg transition-colors">
@@ -201,11 +201,14 @@ function DashboardPage() {
             </Card>
           ))}
 
-          {/* ── Admin panel (admin only): spans 2 cols ── */}
+          {/* -- Admin panel (admin only): spans 2 cols -- */}
           {user.role === "admin" && (
             <Card className="md:col-span-2">
               <CardContent className="py-6">
-                <Link className="group flex flex-col gap-3" to="/admin">
+                <Link
+                  className="group flex flex-col gap-3 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  to="/admin"
+                >
                   <div className="bg-muted group-hover:bg-foreground/10 flex size-9 items-center justify-center rounded-lg transition-colors">
                     <Person className="text-muted-foreground size-4" />
                   </div>

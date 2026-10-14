@@ -61,7 +61,7 @@ export function Features() {
           const Icon = feature.icon;
           return (
             <li
-              className="group bg-background hover:bg-muted/40 p-6 transition-colors duration-200 sm:p-6"
+              className="group bg-background hover:bg-muted/40 p-6 transition-[background-color,transform] duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:p-6"
               key={feature.title}
             >
               <Icon className="text-lime-dim dark:text-lime size-5" />

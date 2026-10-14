@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowUpRight from "@gravity-ui/icons/ArrowUpRight";
 import ChevronDown from "@gravity-ui/icons/ChevronDown";
 import { useEffect, useState } from "react";
 
@@ -82,10 +83,11 @@ export function Faq({
           })}
         </div>
         <Link
-          className="text-muted-foreground hover:text-foreground mt-8 inline-block text-sm underline-offset-4 hover:underline"
+          className="group text-muted-foreground hover:text-foreground mt-8 inline-flex items-center gap-1 text-sm underline-offset-4 transition-colors duration-200 hover:underline"
           to="/faq"
         >
-          View all FAQ &rarr;
+          View all FAQ
+          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:-translate-y-0" />
         </Link>
       </div>
     </section>

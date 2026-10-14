@@ -32,7 +32,7 @@ function SignupPage() {
   return (
     <main className="border-border border-t">
       <div className="container-editorial flex min-h-[80vh] items-center py-16 md:py-24">
-        <div className="mx-auto w-full max-w-md">
+        <div className="animate-fade-up mx-auto w-full max-w-md motion-reduce:animate-none">
           {/* Header */}
           <div className="mb-10 text-center">
             <p className="eyebrow justify-center">
